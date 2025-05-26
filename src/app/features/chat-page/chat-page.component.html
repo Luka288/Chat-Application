@@ -3,6 +3,16 @@
     <aside id="left-panel">
       <div class="chat-list">
         <!-- იუზერის ჩატების დასარენდერებლად -->
+        @for (chat of currentUser()?.chats; track $index) {
+
+        <div
+          class="chat-wrap"
+          [ngClass]="{ active: currentChat() === chat.chatId }"
+        >
+          <app-mini-chat [chatData]="chat" (chatSelected)="setChat($event)" />
+        </div>
+
+        }
       </div>
       <div class="user-m-profile">
         <!-- იუზერის პატარა მინი პროფილი სადაც გამოჩდება მოწვევები-->
@@ -12,13 +22,38 @@
     <aside id="chat-content">
       <div class="content">
         <!-- მესიჯების დასარენდერებლად გამოიყენება -->
+
+        @if (loadingChat()) {
+        <h1>Loading...</h1>
+        }@else if (chatContent().length === 0) {
+
+        <div class="n-chat">
+          <p>💬 No messages yet — start the conversation and say hello! 👋</p>
+        </div>
+
+        }@else {
+
+        <div class="chat-content-wrap">
+          @for (messageData of chatContent(); track $index) {
+          <app-chat-content [chatContent]="messageData" />
+          }
+        </div>
+
+        }
       </div>
+
+      @if (currentChat() !== '') {
       <div class="input-area">
-        <form>
-          <input type="text" placeholder="Type your message here..." />
+        <form [formGroup]="messageControl" (ngSubmit)="sendMessage()">
+          <input
+            type="text"
+            placeholder="Type your message here..."
+            formControlName="message"
+          />
           <button type="submit">Send</button>
         </form>
       </div>
+      }
     </aside>
   </section>
 </main>

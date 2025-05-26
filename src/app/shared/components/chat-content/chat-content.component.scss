@@ -1,0 +1,17 @@
+@use "../../../scss/variables" as *;
+@use "../../../scss/mixins" as *;
+
+main {
+  width: 100%;
+  max-width: 450px;
+  background-color: blue;
+  font-family: $roboto;
+  box-sizing: border-box;
+  padding: 10px;
+
+  .user {
+    p {
+      margin: 0;
+    }
+  }
+}

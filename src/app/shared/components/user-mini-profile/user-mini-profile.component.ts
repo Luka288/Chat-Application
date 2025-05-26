@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { privateUser } from '../../interfaces/user.interface';
 import { AuthService } from '../../services/auth.service';
 
