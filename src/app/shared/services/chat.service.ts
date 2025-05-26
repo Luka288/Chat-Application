@@ -10,6 +10,7 @@ import {
   setDoc,
 } from '@angular/fire/firestore';
 import { chatMessage } from '../interfaces/chat.interface';
+import { orderBy, query } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root',
@@ -45,6 +46,8 @@ export class ChatService {
       this.Fire,
       `generalChat/${id}/messages`
     );
-    return collectionData(messagesCollection, { idField: 'id' });
+    const sortedMessages = query(messagesCollection, orderBy('time', 'asc'));
+
+    return collectionData(sortedMessages, { idField: 'id' });
   }
 }

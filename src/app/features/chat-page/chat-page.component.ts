@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 import { ChatService } from '../../shared/services/chat.service';
 import { chatMessage } from '../../shared/interfaces/chat.interface';
 import { ChatContentComponent } from '../../shared/components/chat-content/chat-content.component';
+import { ScrollDirective } from '../../shared/directives/scroll.directive';
 
 @Component({
   selector: 'app-chat-page',
@@ -26,6 +27,7 @@ import { ChatContentComponent } from '../../shared/components/chat-content/chat-
     MiniChatComponent,
     CommonModule,
     ChatContentComponent,
+    ScrollDirective,
   ],
   templateUrl: './chat-page.component.html',
   styleUrl: './chat-page.component.scss',
@@ -62,8 +64,6 @@ export class ChatPageComponent {
       time: new Date().toISOString(),
       chat_id: this.currentChat(),
     };
-
-    console.log(msgObj);
 
     this.chatService.sendMessage(msgObj);
 

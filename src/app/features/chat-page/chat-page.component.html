@@ -20,7 +20,7 @@
       </div>
     </aside>
     <aside id="chat-content">
-      <div class="content">
+      <div class="content" [appScroll]="chatContent() || currentChat() !== ''">
         <!-- მესიჯების დასარენდერებლად გამოიყენება -->
 
         @if (loadingChat()) {

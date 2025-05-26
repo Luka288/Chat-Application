@@ -4,12 +4,30 @@
 main {
   width: 100%;
   max-width: 450px;
-  background-color: blue;
+  background-color: $message-card-bg;
+  border-radius: 10px;
+  box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.1);
+  // rgba(0, 0, 0, 0.1)
   font-family: $roboto;
   box-sizing: border-box;
   padding: 10px;
+  color: $gray-dark;
 
   .user {
+    p {
+      margin: 0;
+      font-size: $font-size-m;
+
+      span {
+        font-size: $font-size-s;
+      }
+    }
+  }
+
+  .content {
+    font-size: $font-size-m;
+    margin-top: 9px;
+
     p {
       margin: 0;
     }
