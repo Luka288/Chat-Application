@@ -1,4 +1,15 @@
 <main>
-  <p>home works!</p>
-  <h1>home works!</h1>
+  <section id="auth-container">
+    <h2>Authorize</h2>
+    <div class="auth-options">
+      <ul>
+        <li id="google-auth" (click)="authService.googleAuth()">
+          <a>google</a>
+        </li>
+        <li (click)="authService.loginAsAnonym()">
+          <a>anonymous</a>
+        </li>
+      </ul>
+    </div>
+  </section>
 </main>

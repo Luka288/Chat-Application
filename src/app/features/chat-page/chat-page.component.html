@@ -1,0 +1,24 @@
+<main>
+  <section>
+    <aside id="left-panel">
+      <div class="chat-list">
+        <!-- იუზერის ჩატების დასარენდერებლად -->
+      </div>
+      <div class="user-m-profile">
+        <!-- იუზერის პატარა მინი პროფილი სადაც გამოჩდება მოწვევები-->
+        <app-user-mini-profile [user]="currentUser()" />
+      </div>
+    </aside>
+    <aside id="chat-content">
+      <div class="content">
+        <!-- მესიჯების დასარენდერებლად გამოიყენება -->
+      </div>
+      <div class="input-area">
+        <form>
+          <input type="text" placeholder="Type your message here..." />
+          <button type="submit">Send</button>
+        </form>
+      </div>
+    </aside>
+  </section>
+</main>

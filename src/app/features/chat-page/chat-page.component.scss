@@ -1,0 +1,105 @@
+@use "./../../scss/mixins" as *;
+@use "./../../scss/variables" as *;
+
+main {
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  background-color: $main-bg-color;
+  color: white;
+
+  section {
+    width: 100%;
+    height: 100%;
+    @include flex(space-evenly, center, wrap, row);
+
+    #left-panel {
+      width: 20%;
+      height: 100%;
+      min-height: 100vh;
+      background-color: $side-panel-bg-color;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+
+      .chat-list {
+        flex-grow: 1;
+        overflow-y: auto;
+      }
+
+      .user-m-profile {
+        width: 100%;
+        height: 100px;
+        box-sizing: border-box;
+        padding: 5px;
+        background-color: $user-m-profile-bg;
+        margin-top: auto;
+      }
+    }
+
+    #chat-content {
+      width: 80%;
+      height: 100%;
+      min-height: 100vh;
+      background-color: $main-bg-color;
+      display: flex;
+      flex-direction: column;
+
+      .content {
+        flex-grow: 1;
+        overflow-y: auto;
+      }
+
+      .input-area {
+        width: 100%;
+        height: 100px;
+        background-color: $muted-gray;
+        margin-top: auto;
+        box-sizing: border-box;
+        padding: 10px;
+
+        form {
+          display: flex;
+          justify-content: center;
+          gap: 10px;
+          padding: 10px;
+
+          input {
+            @include input-style();
+
+            &::placeholder {
+              color: $off-white;
+              opacity: 0.7;
+            }
+
+            &:focus {
+              background-color: $dark-blue;
+              box-shadow: 0 0 0 3px rgba($white, 0.1);
+            }
+          }
+
+          button {
+            padding: 0 20px;
+            height: 56px;
+            border: none;
+            border-radius: 12px;
+            background-color: $white;
+            color: $dark-blue;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+
+            &:hover {
+              background-color: $off-white;
+            }
+
+            &:active {
+              transform: scale(0.98);
+            }
+          }
+        }
+      }
+    }
+  }
+}

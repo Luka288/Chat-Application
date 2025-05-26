@@ -1,0 +1,46 @@
+@use "../../../scss/variables" as *;
+@use "../../../scss/mixins" as *;
+
+section {
+  width: 100%;
+  height: 100%;
+
+  .top-user-c {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    .base-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      img {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+      }
+
+      p {
+        font-family: $inter;
+        font-size: 20px;
+      }
+    }
+  }
+
+  .sign-out {
+    ul {
+      li {
+        text-align: center;
+        list-style: none;
+        cursor: pointer;
+
+        i {
+          font-size: 24px;
+        }
+      }
+    }
+  }
+}
