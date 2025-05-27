@@ -9,7 +9,6 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../../shared/services/auth.service';
 import { UserMiniProfileComponent } from '../../shared/components/user-mini-profile/user-mini-profile.component';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { MiniChatComponent } from '../../shared/components/mini-chat/mini-chat.component';
 import { CommonModule } from '@angular/common';
 import { ChatService } from '../../shared/services/chat.service';
@@ -17,6 +16,8 @@ import { chatMessage } from '../../shared/interfaces/chat.interface';
 import { ChatContentComponent } from '../../shared/components/chat-content/chat-content.component';
 import { ScrollDirective } from '../../shared/directives/scroll.directive';
 import { Message } from '../../shared/models/message.model';
+import { ChatCreateModalComponent } from '../../shared/components/chat-create-modal/chat-create-modal.component';
+import { privateUser } from '../../shared/interfaces/user.interface';
 
 @Component({
   selector: 'app-chat-page',
@@ -29,6 +30,7 @@ import { Message } from '../../shared/models/message.model';
     CommonModule,
     ChatContentComponent,
     ScrollDirective,
+    ChatCreateModalComponent,
   ],
   templateUrl: './chat-page.component.html',
   styleUrl: './chat-page.component.scss',
@@ -39,14 +41,17 @@ export class ChatPageComponent {
 
   currentChat = signal<string>('');
   loadingChat = signal<boolean>(false);
+  modalOpen = signal<boolean>(false);
+
+  currentUser = signal<privateUser | null>(null);
 
   messageControl = new FormGroup({
     message: new FormControl('', [Validators.required]),
   });
 
-  currentUser = toSignal(this.authService.currentUser(), {
-    initialValue: null,
-  });
+  // currentUser = toSignal(this.authService.currentUser(), {
+  //   initialValue: null,
+  // });
 
   chatContent = signal<chatMessage[]>([]);
 
@@ -55,6 +60,10 @@ export class ChatPageComponent {
     if (!user) return [];
     return [...user.chats, ...(user.createdChats ?? [])];
   });
+
+  ngOnInit(): void {
+    this.fetchUser();
+  }
 
   sendMessage(): void {
     if (this.messageControl.invalid) {
@@ -90,7 +99,15 @@ export class ChatPageComponent {
     });
   }
 
-  createChat() {
-    this.chatService.createChat('angular').then(console.log);
+  fetchUser() {
+    this.authService.currentUser().subscribe((user) => {
+      console.log(user);
+      this.currentUser.set(user);
+    });
+  }
+
+  async createChat(chatName: string): Promise<void> {
+    await this.chatService.createChat(chatName);
+    this.fetchUser();
   }
 }

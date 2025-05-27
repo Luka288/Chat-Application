@@ -6,13 +6,12 @@ import {
   collection,
   collectionData,
   doc,
-  docData,
   setDoc,
   updateDoc,
 } from '@angular/fire/firestore';
-import { chatMessage } from '../interfaces/chat.interface';
 import { arrayUnion, orderBy, query } from 'firebase/firestore';
 import { Message } from '../models/message.model';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +19,7 @@ import { Message } from '../models/message.model';
 export class ChatService {
   private readonly auth = inject(Auth);
   private readonly Fire = inject(Firestore);
+  private readonly authService = inject(AuthService);
 
   async sendMessage(data: Message) {
     const user = this.auth.currentUser;
@@ -52,8 +52,6 @@ export class ChatService {
       `${chatLoc}/${id}/messages`
     );
 
-    console.log(`${chatLoc}/${id}/messages`);
-
     const sortedMessages = query(messagesCollection, orderBy('time', 'asc'));
 
     return collectionData(sortedMessages, { idField: 'id' });
@@ -77,12 +75,18 @@ export class ChatService {
     try {
       await setDoc(chatDoc, chatData);
 
-      await updateDoc(userRef, {
-        createdChats: arrayUnion({
-          chatId: chatName,
-          chatName,
-        }),
-      });
+      await setDoc(
+        userRef,
+        {
+          createdChats: arrayUnion({
+            chatId: chatName,
+            chatName: chatName,
+          }),
+        },
+        { merge: true }
+      );
+
+      this.authService.currentUser();
     } catch (error) {
       console.log(error);
     }

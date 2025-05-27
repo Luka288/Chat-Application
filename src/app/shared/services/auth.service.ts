@@ -96,34 +96,3 @@ export class AuthService {
     );
   }
 }
-
-// async currentUser() {
-//   const user = this.FireAuth.currentUser;
-//   if (user) {
-//     return of({
-//       uid: user.uid,
-//       email: user.email,
-//       username: user.displayName,
-//       photoURL: user.photoURL,
-//       isAnonymous: user.isAnonymous ? 'Anonymous' : 'standard_user',
-//     });
-//   } else {
-//     return of(null);
-//   }
-// }
-
-// const privateData: privateUser = {
-//       uid: user.uid,
-//       email: user.email!,
-//       username: user.displayName!,
-//       photoURL: user.photoURL!,
-//       isAnonymous: user.isAnonymous ? 'Anonymous' : 'standard_user',
-//       chats: [{ chatName: 'general', chatId: 'general' }],
-//     };
-
-//     const publicUserData: publicUser = {
-//       username: user.displayName!,
-//       photoURL: user.photoURL!,
-//       uid: user.uid,
-//       isAnonymous: user.isAnonymous ? 'Anonymous' : 'standard_user',
-//     };

@@ -1,0 +1,17 @@
+<main>
+  <section>
+    <form [formGroup]="chatFormGroup" (ngSubmit)="sendData()">
+      <label for="chatName">Enter chat name</label>
+      <input
+        type="text"
+        name="chatName"
+        id="chatName"
+        formControlName="chatNameControl"
+      />
+      <div class="btns">
+        <button type="submit">Create chat</button>
+        <button (click)="closeModal.emit()" id="closeBtn">Close</button>
+      </div>
+    </form>
+  </section>
+</main>

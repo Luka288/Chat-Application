@@ -1,4 +1,13 @@
 <main>
+  @if (modalOpen()) {
+  <div class="modal-component">
+    <app-chat-create-modal
+      (emitChatName)="createChat($event)"
+      (closeModal)="modalOpen.set(!modalOpen())"
+    />
+  </div>
+  }
+
   <section>
     <aside id="left-panel">
       <div class="chat-list">
@@ -25,7 +34,7 @@
 
         @if (loadingChat()) {
         <h1>Loading...</h1>
-        }@else if (chatContent().length === 0) {
+        }@else if (currentChat() === '') {
 
         <div class="n-chat">
           <p>💬 No messages yet — start the conversation and say hello! 👋</p>
@@ -34,16 +43,21 @@
         }@else {
 
         <div class="chat-content-wrap">
-          @for (messageData of chatContent(); track $index) {
+          @if (chatContent().length === 0) {
+
+          <div class="n-chat">
+            <p>💬 No messages sent yet — say hello to members! 👋</p>
+          </div>
+
+          } @else { @for (messageData of chatContent(); track $index) {
           <app-chat-content
             [chatContent]="messageData"
             [ngClass]="
               messageData.user_id === currentUser()?.uid ? 'myMsg' : ''
             "
           />
-          }
+          } }
         </div>
-
         }
       </div>
 
@@ -56,7 +70,9 @@
             formControlName="message"
           />
           <button type="submit">Send</button>
-          <button (click)="createChat()">Create chat</button>
+          <button type="button" (click)="modalOpen.set(!modalOpen())">
+            Create chat
+          </button>
         </form>
       </div>
       }

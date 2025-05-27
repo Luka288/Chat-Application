@@ -34,3 +34,24 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   transition: all 0.2s ease;
 }
+
+@mixin custom-button($bg: $white, $c: $dark-blue, $h-c: $off-white) {
+  padding: 0 20px;
+  height: 56px;
+  border: none;
+  border-radius: 12px;
+  background-color: $bg;
+  color: $c;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+
+  &:hover {
+    background-color: $h-c;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
