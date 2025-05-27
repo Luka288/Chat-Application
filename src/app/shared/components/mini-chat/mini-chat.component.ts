@@ -9,10 +9,10 @@ import { miniChat } from '../../interfaces/chat.interface';
 })
 export class MiniChatComponent {
   @Input() chatData: miniChat | null = null;
+
   @Output() chatSelected = new EventEmitter<miniChat>();
 
   setChat(_id: string, name: string) {
-    console.log({ chatID: _id, chatName: name });
     this.chatSelected.emit({
       chatId: _id,
       chatName: name,

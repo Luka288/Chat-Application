@@ -5,7 +5,8 @@ export interface privateUser {
   uid: string;
   isAnonymous: string;
   chats: { chatName: string; chatId: string }[];
+  createdChats?: { chatName: string; chatId: string }[];
 }
 
 // chats ობიექტი ? omit?
-export type publicUser = Omit<privateUser, 'email' | 'chats'>;
+export type publicUser = Omit<privateUser, 'email' | 'chats' | 'createdChats'>;

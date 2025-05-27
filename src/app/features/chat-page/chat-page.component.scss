@@ -70,6 +70,13 @@ main {
           display: flex;
           flex-direction: column;
           gap: 25px;
+
+          app-chat-content {
+            &.myMsg {
+              display: flex;
+              justify-content: flex-end;
+            }
+          }
         }
       }
 

@@ -3,7 +3,7 @@
     <aside id="left-panel">
       <div class="chat-list">
         <!-- იუზერის ჩატების დასარენდერებლად -->
-        @for (chat of currentUser()?.chats; track $index) {
+        @for (chat of combinedChats(); track $index) {
 
         <div
           class="chat-wrap"
@@ -35,7 +35,12 @@
 
         <div class="chat-content-wrap">
           @for (messageData of chatContent(); track $index) {
-          <app-chat-content [chatContent]="messageData" />
+          <app-chat-content
+            [chatContent]="messageData"
+            [ngClass]="
+              messageData.user_id === currentUser()?.uid ? 'myMsg' : ''
+            "
+          />
           }
         </div>
 
@@ -51,6 +56,7 @@
             formControlName="message"
           />
           <button type="submit">Send</button>
+          <button (click)="createChat()">Create chat</button>
         </form>
       </div>
       }

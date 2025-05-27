@@ -11,6 +11,7 @@ import {
 import { getDoc, setDoc } from 'firebase/firestore';
 import { privateUser, publicUser } from '../interfaces/user.interface';
 import { from, map, Observable, of, switchMap } from 'rxjs';
+import { PublicUser, User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -57,21 +58,8 @@ export class AuthService {
       return;
     }
 
-    const privateData: privateUser = {
-      uid: user.uid,
-      email: user.email!,
-      username: user.displayName!,
-      photoURL: user.photoURL!,
-      isAnonymous: user.isAnonymous ? 'Anonymous' : 'standard_user',
-      chats: [{ chatName: 'general', chatId: 'general' }],
-    };
-
-    const publicUserData: publicUser = {
-      username: user.displayName!,
-      photoURL: user.photoURL!,
-      uid: user.uid,
-      isAnonymous: user.isAnonymous ? 'Anonymous' : 'standard_user',
-    };
+    const privateData = User.privateUserModel(user);
+    const publicUserData = PublicUser.publicUserModel(user);
 
     const usersRef = doc(this.Fire, `users/${user.uid}`);
     const publicRef = doc(this.Fire, `publicUser/${user.uid}`);
@@ -84,9 +72,8 @@ export class AuthService {
       // ინახავს ისეთ დატას რომელიც საჭიროა ჩათებში გამოსატანად
       // მაგალითან არის თუ არა იუზერი ონლინე
       await setDoc(publicRef, publicUserData, { merge: true });
-      console.log('User data stored successfully');
     } catch (error) {
-      console.error('Error storing user data');
+      console.error(error);
     }
   }
 
@@ -124,3 +111,19 @@ export class AuthService {
 //     return of(null);
 //   }
 // }
+
+// const privateData: privateUser = {
+//       uid: user.uid,
+//       email: user.email!,
+//       username: user.displayName!,
+//       photoURL: user.photoURL!,
+//       isAnonymous: user.isAnonymous ? 'Anonymous' : 'standard_user',
+//       chats: [{ chatName: 'general', chatId: 'general' }],
+//     };
+
+//     const publicUserData: publicUser = {
+//       username: user.displayName!,
+//       photoURL: user.photoURL!,
+//       uid: user.uid,
+//       isAnonymous: user.isAnonymous ? 'Anonymous' : 'standard_user',
+//     };

@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {
   FormControl,
@@ -16,6 +16,7 @@ import { ChatService } from '../../shared/services/chat.service';
 import { chatMessage } from '../../shared/interfaces/chat.interface';
 import { ChatContentComponent } from '../../shared/components/chat-content/chat-content.component';
 import { ScrollDirective } from '../../shared/directives/scroll.directive';
+import { Message } from '../../shared/models/message.model';
 
 @Component({
   selector: 'app-chat-page',
@@ -49,7 +50,11 @@ export class ChatPageComponent {
 
   chatContent = signal<chatMessage[]>([]);
 
-  ngOnInit(): void {}
+  combinedChats = computed(() => {
+    const user = this.currentUser();
+    if (!user) return [];
+    return [...user.chats, ...(user.createdChats ?? [])];
+  });
 
   sendMessage(): void {
     if (this.messageControl.invalid) {
@@ -57,17 +62,19 @@ export class ChatPageComponent {
     }
 
     const text = this.messageControl.value.message;
-    const msgObj: chatMessage = {
+
+    const msgObj = Message.fromData({
       sender: this.currentUser()?.username!,
       user_id: this.currentUser()?.uid!,
       text: text!,
       time: new Date().toISOString(),
       chat_id: this.currentChat(),
-    };
+    });
 
     this.chatService.sendMessage(msgObj);
 
     this.messageControl.reset();
+    this.fetchMessages(this.currentChat());
   }
 
   setChat(chat: { chatId: string; chatName: string }): void {
@@ -81,5 +88,9 @@ export class ChatPageComponent {
       this.chatContent.set(messages as chatMessage[]);
       if (messages) this.loadingChat.set(false);
     });
+  }
+
+  createChat() {
+    this.chatService.createChat('angular').then(console.log);
   }
 }
