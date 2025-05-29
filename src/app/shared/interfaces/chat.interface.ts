@@ -9,5 +9,14 @@ export interface chatMessage {
   text: string;
   time: Date | string;
   chat_id: string;
-  chatLocation?: () => string;
+  chatLocation?: string;
+}
+
+export interface chat {
+  chatName: string;
+  chatId: string;
+  createdBy: string;
+  createdAt: Date;
+  members: string[];
+  messages: chatMessage[];
 }
