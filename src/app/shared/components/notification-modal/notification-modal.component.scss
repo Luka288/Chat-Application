@@ -69,11 +69,11 @@ main {
           gap: 30px;
 
           #accept {
-            @include custom-button($success, $white, $light-green);
+            @include custom-button(56px, $success, $white, $light-green);
           }
 
           #decline {
-            @include custom-button($danger, $white, $danger-hover);
+            @include custom-button(56px, $danger, $white, $danger-hover);
           }
         }
       }
@@ -83,7 +83,7 @@ main {
       padding-top: 10px;
 
       button {
-        @include custom-button($danger, $white, $danger-hover);
+        @include custom-button(56px, $danger, $white, $danger-hover);
         height: 40px;
       }
     }

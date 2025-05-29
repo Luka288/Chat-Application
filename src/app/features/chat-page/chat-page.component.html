@@ -11,10 +11,24 @@
     (closeModal)="notificationOpen.set(!notificationOpen())"
     [data]="notifications()"
   />
+  } @if (searchToggle()) {
+  <app-user-search
+    (close)="searchToggle.set(!searchToggle())"
+    (emitSearch)="getUserSearch($event)"
+    (emitInvite)="inviteUser($event)"
+    [results]="foundUsers()"
+  />
   }
 
   <section>
     <aside id="left-panel">
+      <div class="top-section">
+        <ul>
+          <li>
+            <a (click)="modalOpen.set(!modalOpen())">Create chat</a>
+          </li>
+        </ul>
+      </div>
       <div class="chat-list">
         <!-- იუზერის ჩატების დასარენდერებლად -->
         @for (chat of combinedChats(); track $index) {
@@ -79,8 +93,13 @@
             formControlName="message"
           />
           <button type="submit">Send</button>
-          <button type="button" (click)="modalOpen.set(!modalOpen())">
-            Create chat
+
+          <button
+            type="submit"
+            *ngIf="currentChat() !== 'general'"
+            (click)="searchToggle.set(!searchToggle())"
+          >
+            Invite people
           </button>
         </form>
       </div>

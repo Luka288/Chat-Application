@@ -7,13 +7,19 @@ import {
   collectionData,
   doc,
   setDoc,
-  updateDoc,
 } from '@angular/fire/firestore';
-import { arrayUnion, orderBy, query } from 'firebase/firestore';
+import {
+  arrayUnion,
+  orderBy,
+  query,
+  serverTimestamp,
+} from 'firebase/firestore';
 import { Message } from '../models/message.model';
 import { AuthService } from './auth.service';
 import { Observable, of } from 'rxjs';
 import { Invitation } from '../interfaces/invite.interface';
+import { publicUser } from '../interfaces/user.interface';
+import { AlertsService } from './alerts.service';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +28,7 @@ export class ChatService {
   private readonly auth = inject(Auth);
   private readonly Fire = inject(Firestore);
   private readonly authService = inject(AuthService);
+  private readonly alertService = inject(AlertsService);
 
   async sendMessage(data: Message) {
     const user = this.auth.currentUser;
@@ -101,5 +108,26 @@ export class ChatService {
     const invRef = collection(this.Fire, `users/${user.uid}/invitations`);
 
     return collectionData(invRef) as Observable<Invitation[]>;
+  }
+
+  async sendInvite(user: publicUser, chatId: string) {
+    const curUser = this.auth.currentUser;
+
+    if (!curUser) return;
+
+    const userRef = collection(this.Fire, `users/${user.uid}/invitations`);
+
+    try {
+      await addDoc(userRef, {
+        invitedBy: curUser.uid,
+        username: curUser.displayName,
+        chat_id: chatId,
+        status: 'pending',
+        time: serverTimestamp(),
+      });
+      this.alertService.toast('Invite sent', 'success', 'green');
+    } catch (error) {
+      console.error(error);
+    }
   }
 }

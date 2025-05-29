@@ -1,0 +1,84 @@
+@use "../../../scss/variables" as *;
+@use "../../../scss/mixins" as *;
+
+section {
+  @include modal-style();
+
+  .content-body {
+    @include modal-body();
+
+    h2 {
+      color: black;
+      margin: 0;
+      font-family: $montserrat;
+      font-weight: 450;
+      margin-bottom: 15px;
+    }
+
+    form {
+      input {
+        @include input-style(#d7d7d7);
+        color: black;
+      }
+    }
+
+    .buttons {
+      margin-top: 20px;
+      margin-bottom: 25px;
+
+      button {
+        @include custom-button(56px, $danger, $white, $danger-hover);
+      }
+    }
+
+    .search-results {
+      width: 100%;
+      height: 250px;
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+
+      .u-card {
+        width: 90%;
+        display: flex;
+        align-items: center;
+        background-color: $gray-light;
+        border-radius: 10px;
+        box-sizing: border-box;
+        padding: 10px;
+
+        .user-info {
+          width: 90%;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+
+          img {
+            // width: 50px;
+            height: 50px;
+          }
+
+          p {
+            font-weight: 500;
+            text-transform: capitalize;
+            font-family: $montserrat;
+            font-size: $font-size-l;
+            color: $dark-blue;
+          }
+        }
+
+        .btns {
+          width: fit-content;
+          height: fit-content;
+
+          button {
+            @include custom-button(auto, $dark-blue, $off-white, $cobalt);
+            padding: 15px;
+          }
+        }
+      }
+    }
+  }
+}

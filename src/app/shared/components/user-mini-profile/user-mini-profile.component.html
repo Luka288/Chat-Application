@@ -3,13 +3,13 @@
     <div class="base-info">
       <img [src]="user?.photoURL" [alt]="`${user?.username} IMAGE`" />
       <p>{{ user?.username || user?.isAnonymous }}</p>
-    </div>
 
-    <div class="notifications" (click)="openNotification.emit()">
-      <i class="fa-solid fa-bell"></i>
-      <span [ngClass]="notificationCount >= 1 ? 'ac' : ''">
-        {{ notificationCount }}
-      </span>
+      <div class="notifications" (click)="openNotification.emit()">
+        <i class="fa-solid fa-bell"></i>
+        <span [ngClass]="notificationCount >= 1 ? 'ac' : ''">
+          {{ notificationCount }}
+        </span>
+      </div>
     </div>
 
     <div class="sign-out">
