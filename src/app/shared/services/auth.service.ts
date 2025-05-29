@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
-import { doc, Firestore } from '@angular/fire/firestore';
+import { collection, doc, Firestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import {
   getAuth,

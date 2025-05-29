@@ -6,6 +6,11 @@
       (closeModal)="modalOpen.set(!modalOpen())"
     />
   </div>
+  } @if (notificationOpen()) {
+  <app-notification-modal
+    (closeModal)="notificationOpen.set(!notificationOpen())"
+    [data]="notifications()"
+  />
   }
 
   <section>
@@ -25,7 +30,11 @@
       </div>
       <div class="user-m-profile">
         <!-- იუზერის პატარა მინი პროფილი სადაც გამოჩდება მოწვევები-->
-        <app-user-mini-profile [user]="currentUser()" />
+        <app-user-mini-profile
+          [user]="currentUser()"
+          [notificationCount]="notifications().length"
+          (openNotification)="notificationOpen.set(!notificationOpen())"
+        />
       </div>
     </aside>
     <aside id="chat-content">

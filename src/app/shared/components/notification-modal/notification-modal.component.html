@@ -1,0 +1,44 @@
+<main>
+  <section>
+    <h1>Notifications</h1>
+
+    <div class="data-container">
+      @for (item of data; track $index) {
+      <div class="data-card">
+        <div class="card-title">
+          <p>Invitation</p>
+        </div>
+        <div class="base-data">
+          <p>
+            Invited By:
+            {{ item.invitedBy }}
+            <!-- შესაცვლელია მომხმარებლის Id ის მაგივრად სახელი-->
+          </p>
+          <p>
+            Chat Id:
+            {{ item.chat_id }}
+          </p>
+          <p>
+            Invite status:
+            {{ item.status }}
+          </p>
+        </div>
+
+        <div class="u-actions">
+          <!-- ! დასამატებელია მოწვევის დადასტურების ლოგიკა
+         ! როდესაც დაადასტრუებს მომხმარებელი მოწვევას უნდა წაიშალოს 
+         ! მესიჯი firebase ზე და დაემატოს ჩათი მომხმარებლის chats კოლექციაში
+         ! ჩატის დატით ასევე ჩატის მემბერებში უნდა დაემატოს მომხმარებელი -->
+          <button id="accept">Accept invite</button>
+          <button id="decline">Decline invite</button>
+        </div>
+      </div>
+
+      }
+    </div>
+
+    <div class="buttons">
+      <button (click)="closeModal.emit()">Close</button>
+    </div>
+  </section>
+</main>

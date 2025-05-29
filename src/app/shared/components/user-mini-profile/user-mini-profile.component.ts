@@ -13,4 +13,6 @@ export class UserMiniProfileComponent {
   readonly authService = inject(AuthService);
 
   @Input() user: privateUser | null = null;
+  @Input() notificationCount: number = 0;
+  @Output() openNotification = new EventEmitter<void>();
 }

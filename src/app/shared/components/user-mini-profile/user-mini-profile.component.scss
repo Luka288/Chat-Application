@@ -28,6 +28,23 @@ section {
         font-size: 20px;
       }
     }
+
+    .notifications {
+      position: relative;
+      cursor: pointer;
+
+      i {
+        font-size: $font-size-l;
+      }
+
+      span {
+        display: none;
+
+        &.ac {
+          @include notification-ico();
+        }
+      }
+    }
   }
 
   .sign-out {

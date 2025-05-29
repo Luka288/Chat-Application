@@ -12,6 +12,8 @@ import {
 import { arrayUnion, orderBy, query } from 'firebase/firestore';
 import { Message } from '../models/message.model';
 import { AuthService } from './auth.service';
+import { Observable, of } from 'rxjs';
+import { Invitation } from '../interfaces/invite.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -90,5 +92,14 @@ export class ChatService {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  getInvitations(): Observable<Invitation[]> {
+    const user = this.auth.currentUser;
+    if (!user) return of([]);
+
+    const invRef = collection(this.Fire, `users/${user.uid}/invitations`);
+
+    return collectionData(invRef) as Observable<Invitation[]>;
   }
 }

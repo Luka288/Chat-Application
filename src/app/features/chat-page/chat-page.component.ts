@@ -1,4 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 import {
   FormControl,
@@ -18,6 +19,7 @@ import { ScrollDirective } from '../../shared/directives/scroll.directive';
 import { Message } from '../../shared/models/message.model';
 import { ChatCreateModalComponent } from '../../shared/components/chat-create-modal/chat-create-modal.component';
 import { privateUser } from '../../shared/interfaces/user.interface';
+import { NotificationModalComponent } from './../../shared/components/notification-modal/notification-modal.component';
 
 @Component({
   selector: 'app-chat-page',
@@ -31,6 +33,7 @@ import { privateUser } from '../../shared/interfaces/user.interface';
     ChatContentComponent,
     ScrollDirective,
     ChatCreateModalComponent,
+    NotificationModalComponent,
   ],
   templateUrl: './chat-page.component.html',
   styleUrl: './chat-page.component.scss',
@@ -39,14 +42,21 @@ export class ChatPageComponent {
   private readonly chatService = inject(ChatService);
   readonly authService = inject(AuthService);
 
+  // todo: invitations
+
   currentChat = signal<string>('');
   loadingChat = signal<boolean>(false);
   modalOpen = signal<boolean>(false);
+  notificationOpen = signal<boolean>(false);
 
   currentUser = signal<privateUser | null>(null);
 
   messageControl = new FormGroup({
     message: new FormControl('', [Validators.required]),
+  });
+
+  notifications = toSignal(this.chatService.getInvitations(), {
+    initialValue: [],
   });
 
   // currentUser = toSignal(this.authService.currentUser(), {
