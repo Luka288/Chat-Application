@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Injectable,
+  Input,
+  Output,
+} from '@angular/core';
 import { Invitation } from '../../interfaces/invite.interface';
 
 @Component({
@@ -10,4 +16,6 @@ import { Invitation } from '../../interfaces/invite.interface';
 export class NotificationModalComponent {
   @Input() data: Invitation[] | null = null;
   @Output() closeModal = new EventEmitter<void>();
+  @Output() emitAccept = new EventEmitter<Invitation>();
+  @Output() emitDecline = new EventEmitter<Invitation>();
 }

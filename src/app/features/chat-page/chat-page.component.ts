@@ -25,7 +25,7 @@ import {
 import { NotificationModalComponent } from './../../shared/components/notification-modal/notification-modal.component';
 import { UserSearchComponent } from '../../shared/components/user-search/user-search.component';
 import { SearchService } from '../../shared/services/search.service';
-import { single } from 'rxjs';
+import { Invitation } from '../../shared/interfaces/invite.interface';
 
 @Component({
   selector: 'app-chat-page',
@@ -136,5 +136,25 @@ export class ChatPageComponent {
   async createChat(chatName: string): Promise<void> {
     await this.chatService.createChat(chatName);
     this.fetchUser();
+  }
+
+  acceptInvite(data: Invitation) {
+    this.chatService.acceptInvite(
+      {
+        chatName: data.chat_id,
+        chatId: data.chat_id,
+      },
+      data.invitedBy
+    );
+  }
+
+  declineInvite(data: Invitation) {
+    this.chatService.declineInvite(
+      {
+        chatName: data.chat_id,
+        chatId: data.chat_id,
+      },
+      data.invitedBy
+    );
   }
 }

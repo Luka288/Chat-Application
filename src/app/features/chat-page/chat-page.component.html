@@ -9,6 +9,8 @@
   } @if (notificationOpen()) {
   <app-notification-modal
     (closeModal)="notificationOpen.set(!notificationOpen())"
+    (emitAccept)="acceptInvite($event)"
+    (emitDecline)="declineInvite($event)"
     [data]="notifications()"
   />
   } @if (searchToggle()) {

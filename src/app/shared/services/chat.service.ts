@@ -7,9 +7,11 @@ import {
   collectionData,
   doc,
   setDoc,
+  updateDoc,
 } from '@angular/fire/firestore';
 import {
   arrayUnion,
+  deleteDoc,
   orderBy,
   query,
   serverTimestamp,
@@ -20,6 +22,7 @@ import { Observable, of } from 'rxjs';
 import { Invitation } from '../interfaces/invite.interface';
 import { publicUser } from '../interfaces/user.interface';
 import { AlertsService } from './alerts.service';
+import { chat } from '../interfaces/chat.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -112,13 +115,13 @@ export class ChatService {
 
   async sendInvite(user: publicUser, chatId: string) {
     const curUser = this.auth.currentUser;
-
     if (!curUser) return;
 
-    const userRef = collection(this.Fire, `users/${user.uid}/invitations`);
+    const invId = `${curUser.uid}_${chatId}`;
+    const userRef = doc(this.Fire, `users/${user.uid}/invitations/${invId}`);
 
     try {
-      await addDoc(userRef, {
+      await setDoc(userRef, {
         invitedBy: curUser.uid,
         username: curUser.displayName,
         chat_id: chatId,
@@ -129,5 +132,39 @@ export class ChatService {
     } catch (error) {
       console.error(error);
     }
+  }
+
+  acceptInvite(
+    chatData: { chatName: string; chatId: string },
+    invitedBy: string
+  ) {
+    const user = this.auth.currentUser;
+    if (!user) return;
+
+    const userRef = doc(this.Fire, `users/${user.uid}`);
+
+    updateDoc(userRef, {
+      chats: arrayUnion(chatData),
+    });
+
+    const invId = `${invitedBy}_${chatData.chatId}`;
+    const invRef = doc(this.Fire, `users/${user.uid}/invitations/${invId}`);
+    deleteDoc(invRef);
+
+    this.alertService.toast('Invite accepted', 'success', 'green');
+  }
+
+  declineInvite(
+    chatData: { chatName: string; chatId: string },
+    invitedBy: string
+  ) {
+    const user = this.auth.currentUser;
+    if (!user) return;
+
+    const invId = `${invitedBy}_${chatData.chatId}`;
+    const invRef = doc(this.Fire, `users/${user.uid}/invitations/${invId}`);
+    deleteDoc(invRef);
+
+    this.alertService.toast('Invite rejected', 'success', 'green');
   }
 }

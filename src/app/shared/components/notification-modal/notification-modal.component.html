@@ -25,12 +25,12 @@
         </div>
 
         <div class="u-actions">
-          <!-- ! დასამატებელია მოწვევის დადასტურების ლოგიკა
-         ! როდესაც დაადასტრუებს მომხმარებელი მოწვევას უნდა წაიშალოს 
-         ! მესიჯი firebase ზე და დაემატოს ჩათი მომხმარებლის chats კოლექციაში
-         ! ჩატის დატით ასევე ჩატის მემბერებში უნდა დაემატოს მომხმარებელი -->
-          <button id="accept">Accept invite</button>
-          <button id="decline">Decline invite</button>
+          <button id="accept" (click)="emitAccept.emit(item)">
+            Accept invite
+          </button>
+          <button id="decline" (click)="emitDecline.emit(item)">
+            Decline invite
+          </button>
         </div>
       </div>
 

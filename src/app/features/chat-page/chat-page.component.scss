@@ -105,6 +105,8 @@ main {
           gap: 25px;
 
           app-chat-content {
+            overflow-wrap: break-word;
+
             &.myMsg {
               display: flex;
               justify-content: flex-end;
