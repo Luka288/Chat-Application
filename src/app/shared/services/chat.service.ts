@@ -130,6 +130,7 @@ export class ChatService {
       });
       this.alertService.toast('Invite sent', 'success', 'green');
     } catch (error) {
+      this.alertService.toast('Invite already sent', 'error', 'red');
       console.error(error);
     }
   }
