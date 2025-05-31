@@ -38,7 +38,7 @@
         </div>
         <div class="chat-list">
           <!-- იუზერის ჩატების დასარენდერებლად -->
-          @for (chat of combinedChats(); track $index) {
+          @for (chat of chats()?.allChats; track $index) {
 
           <div
             class="chat-wrap"

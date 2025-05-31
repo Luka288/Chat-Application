@@ -6,6 +6,7 @@ import {
   collection,
   collectionData,
   doc,
+  docData,
   setDoc,
   updateDoc,
 } from '@angular/fire/firestore';
@@ -18,11 +19,11 @@ import {
 } from 'firebase/firestore';
 import { Message } from '../models/message.model';
 import { AuthService } from './auth.service';
-import { Observable, of } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { Invitation } from '../interfaces/invite.interface';
-import { publicUser } from '../interfaces/user.interface';
+import { privateUser, publicUser } from '../interfaces/user.interface';
 import { AlertsService } from './alerts.service';
-import { chat } from '../interfaces/chat.interface';
+import { combinedChats } from '../interfaces/chats.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -167,5 +168,26 @@ export class ChatService {
     deleteDoc(invRef);
 
     this.alertService.toast('Invite rejected', 'success', 'green');
+  }
+
+  loadChats(): Observable<combinedChats | null> {
+    const user = this.auth.currentUser;
+    if (!user) return of(null);
+
+    const userRef = doc(this.Fire, `users/${user.uid}`);
+
+    return docData(userRef).pipe(
+      map((data) => {
+        const userData = data as privateUser;
+        if (!userData) return null;
+
+        const created = userData.createdChats ?? [];
+        const joined = userData.chats ?? [];
+
+        const allChats = [...created, ...joined];
+
+        return { allChats };
+      })
+    );
   }
 }

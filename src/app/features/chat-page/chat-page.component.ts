@@ -1,4 +1,10 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  signal,
+  SimpleChanges,
+} from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 import {
@@ -57,7 +63,7 @@ export class ChatPageComponent {
   modalOpen = signal<boolean>(false);
   notificationOpen = signal<boolean>(false);
   searchToggle = signal<boolean>(false);
-  isActive = signal<boolean>(false)
+  isActive = signal<boolean>(false);
 
   currentUser = signal<privateUser | null>(null);
 
@@ -73,14 +79,14 @@ export class ChatPageComponent {
 
   chatContent = signal<chatMessage[]>([]);
 
-  combinedChats = computed(() => {
-    const user = this.currentUser();
-    if (!user) return [];
-    return [...user.chats, ...(user.createdChats ?? [])];
-  });
+  chats = toSignal(this.chatService.loadChats(), { initialValue: null });
 
   ngOnInit(): void {
     this.fetchUser();
+
+    this.chatService.loadChats().subscribe((res) => {
+      console.log(res?.allChats);
+    });
   }
 
   sendMessage(): void {
