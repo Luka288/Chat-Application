@@ -24,35 +24,42 @@
 
   <section>
     <aside id="left-panel">
-      <div class="top-section">
-        <ul>
-          <li>
-            <a (click)="modalOpen.set(!modalOpen())">Create chat</a>
-          </li>
-        </ul>
+      <div class="bars">
+        <i class="fa-solid fa-bars" (click)="isActive.set(!isActive())"></i>
       </div>
-      <div class="chat-list">
-        <!-- იუზერის ჩატების დასარენდერებლად -->
-        @for (chat of combinedChats(); track $index) {
 
-        <div
-          class="chat-wrap"
-          [ngClass]="{ active: currentChat() === chat.chatId }"
-        >
-          <app-mini-chat [chatData]="chat" (chatSelected)="setChat($event)" />
+      <div class="base-c" [class.active]="isActive()">
+        <div class="top-section">
+          <ul>
+            <li>
+              <a (click)="modalOpen.set(!modalOpen())">Create chat</a>
+            </li>
+          </ul>
         </div>
+        <div class="chat-list">
+          <!-- იუზერის ჩატების დასარენდერებლად -->
+          @for (chat of combinedChats(); track $index) {
 
-        }
-      </div>
-      <div class="user-m-profile">
-        <!-- იუზერის პატარა მინი პროფილი სადაც გამოჩდება მოწვევები-->
-        <app-user-mini-profile
-          [user]="currentUser()"
-          [notificationCount]="notifications().length"
-          (openNotification)="notificationOpen.set(!notificationOpen())"
-        />
+          <div
+            class="chat-wrap"
+            [ngClass]="{ active: currentChat() === chat.chatId }"
+          >
+            <app-mini-chat [chatData]="chat" (chatSelected)="setChat($event)" />
+          </div>
+
+          }
+        </div>
+        <div class="user-m-profile">
+          <!-- იუზერის პატარა მინი პროფილი სადაც გამოჩდება მოწვევები-->
+          <app-user-mini-profile
+            [user]="currentUser()"
+            [notificationCount]="notifications().length"
+            (openNotification)="notificationOpen.set(!notificationOpen())"
+          />
+        </div>
       </div>
     </aside>
+
     <aside id="chat-content">
       <div class="content" [appScroll]="chatContent() || currentChat() !== ''">
         <!-- მესიჯების დასარენდერებლად გამოიყენება -->

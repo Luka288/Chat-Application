@@ -11,7 +11,8 @@ main {
   section {
     width: 100%;
     height: 100%;
-    @include flex(space-evenly, center, wrap, row);
+    // @include flex(space-evenly, center, wrap, row);
+    display: flex;
 
     .n-chat {
       width: 100%;
@@ -27,68 +28,78 @@ main {
     }
 
     #left-panel {
-      width: 20%;
+      width: 90%;
+      max-width: 450px;
       height: 100%;
       min-height: 100vh;
       background-color: $side-panel-bg-color;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
 
-      .top-section {
-        width: 100%;
-        height: 55px;
-        background-color: $user-m-profile-bg;
+      .bars {
+        display: none;
+      }
+
+      .base-c {
+        min-height: 100vh;
         box-sizing: border-box;
-        padding: 15px;
+        display: flex;
+        flex-direction: column;
 
-        ul {
-          height: 100%;
-          margin: 0;
-          place-self: end;
-          display: flex;
-          justify-content: center;
-          align-items: center;
+        .top-section {
+          width: 100%;
+          height: 55px;
+          background-color: $user-m-profile-bg;
+          box-sizing: border-box;
+          padding: 15px;
 
-          li {
-            width: fit-content;
-            height: fit-content;
-            list-style: none;
+          ul {
+            height: 100%;
+            margin: 0;
+            place-self: end;
             display: flex;
             justify-content: center;
             align-items: center;
-            box-sizing: border-box;
-            @include custom-button(30px);
 
-            a {
-              font-family: $inter;
-              font-size: 15px;
+            li {
+              width: fit-content;
+              height: fit-content;
+              list-style: none;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              box-sizing: border-box;
+              @include custom-button(30px);
+
+              a {
+                font-family: $inter;
+                font-size: 15px;
+              }
             }
           }
         }
-      }
 
-      .chat-list {
-        flex-grow: 1;
-        overflow-y: auto;
-        box-sizing: border-box;
-        padding: 15px;
-      }
+        .chat-list {
+          flex-grow: 1;
+          overflow-y: auto;
+          box-sizing: border-box;
+          padding: 15px;
+        }
 
-      .user-m-profile {
-        width: 100%;
-        height: 100px;
-        box-sizing: border-box;
-        padding: 5px;
-        background-color: $user-m-profile-bg;
-        margin-top: auto;
+        .user-m-profile {
+          width: 100%;
+          height: 100px;
+          box-sizing: border-box;
+          padding: 5px;
+          background-color: $user-m-profile-bg;
+          margin-top: auto;
+        }
       }
     }
 
     #chat-content {
-      width: 80%;
+      width: 100%;
       height: 100vh;
       min-height: 100vh;
+      flex-shrink: 1;
       background-color: $main-bg-color;
       display: flex;
       flex-direction: column;
@@ -130,6 +141,7 @@ main {
           padding: 10px;
 
           input {
+            width: 90%;
             @include input-style();
 
             &::placeholder {
@@ -173,6 +185,51 @@ main {
 
     &.active {
       background-color: #3b82f6;
+    }
+  }
+}
+
+@media (max-width: 1045px) {
+  main {
+    section {
+      justify-content: space-between;
+
+      #left-panel {
+        width: fit-content;
+        box-sizing: border-box;
+        padding: 20px;
+        // box-sizing: border-box;
+        // position: fixed;
+        // padding: 20px;
+        // z-index: 250;
+
+        .bars {
+          display: block;
+          position: relative;
+          z-index: 20001;
+
+          i {
+            font-size: 25px;
+            cursor: pointer;
+          }
+        }
+
+        .base-c {
+          display: none;
+
+          &.active {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 70%;
+            height: 100vh;
+            z-index: 2000;
+            background-color: $side-panel-bg-color;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+          }
+        }
+      }
     }
   }
 }

@@ -57,6 +57,7 @@ export class ChatPageComponent {
   modalOpen = signal<boolean>(false);
   notificationOpen = signal<boolean>(false);
   searchToggle = signal<boolean>(false);
+  isActive = signal<boolean>(false)
 
   currentUser = signal<privateUser | null>(null);
 
