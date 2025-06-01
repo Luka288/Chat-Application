@@ -24,6 +24,7 @@ import { Invitation } from '../interfaces/invite.interface';
 import { privateUser, publicUser } from '../interfaces/user.interface';
 import { AlertsService } from './alerts.service';
 import { combinedChats } from '../interfaces/chats.interface';
+import { miniChat } from '../interfaces/chat.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -75,25 +76,27 @@ export class ChatService {
     if (!user) return;
 
     const userRef = doc(this.Fire, `users/${user.uid}`);
-    const chatDoc = doc(this.Fire, `chats/${chatName}`);
-
-    const chatData = {
-      chatName: chatName,
-      chatId: chatName,
-      createdBy: user.uid,
-      createdAt: new Date().toISOString(),
-      members: [],
-    };
+    const chatRef = collection(this.Fire, `chats`);
 
     try {
-      await setDoc(chatDoc, chatData);
+      const docRef = await addDoc(chatRef, {
+        chatName,
+        createdBy: user.uid,
+        createdAt: new Date().toISOString(),
+        members: [],
+      });
+
+      await setDoc(docRef, { chatId: docRef.id }, { merge: true });
 
       await setDoc(
         userRef,
         {
           createdChats: arrayUnion({
-            chatId: chatName,
-            chatName: chatName,
+            chatName,
+            chatId: docRef.id,
+            createdBy: user.uid,
+            createdAt: new Date().toISOString(),
+            members: [],
           }),
         },
         { merge: true }
@@ -114,18 +117,19 @@ export class ChatService {
     return collectionData(invRef) as Observable<Invitation[]>;
   }
 
-  async sendInvite(user: publicUser, chatId: string) {
+  async sendInvite(user: publicUser, data: miniChat) {
     const curUser = this.auth.currentUser;
     if (!curUser) return;
 
-    const invId = `${curUser.uid}_${chatId}`;
+    const invId = `${curUser.uid}_${data.chatId}`;
     const userRef = doc(this.Fire, `users/${user.uid}/invitations/${invId}`);
 
     try {
       await setDoc(userRef, {
         invitedBy: curUser.uid,
         username: curUser.displayName,
-        chat_id: chatId,
+        chat_id: data.chatId,
+        chatName: data.chatName,
         status: 'pending',
         time: serverTimestamp(),
       });
@@ -136,20 +140,22 @@ export class ChatService {
     }
   }
 
-  acceptInvite(
-    chatData: { chatName: string; chatId: string },
-    invitedBy: string
-  ) {
+  async acceptInvite(chatData: Invitation) {
     const user = this.auth.currentUser;
     if (!user) return;
 
     const userRef = doc(this.Fire, `users/${user.uid}`);
 
-    updateDoc(userRef, {
-      chats: arrayUnion(chatData),
+    console.log(chatData);
+
+    await updateDoc(userRef, {
+      chats: arrayUnion({
+        chatId: chatData.chat_id,
+        chatName: chatData.chatName,
+      }),
     });
 
-    const invId = `${invitedBy}_${chatData.chatId}`;
+    const invId = `${chatData.invitedBy}_${chatData.chat_id}`;
     const invRef = doc(this.Fire, `users/${user.uid}/invitations/${invId}`);
     deleteDoc(invRef);
 

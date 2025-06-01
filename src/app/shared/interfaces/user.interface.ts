@@ -1,3 +1,5 @@
+import { miniChat } from './chat.interface';
+
 export interface privateUser {
   username: string;
   email: string;
@@ -10,3 +12,8 @@ export interface privateUser {
 
 // chats ობიექტი ? omit?
 export type publicUser = Omit<privateUser, 'email' | 'chats' | 'createdChats'>;
+
+export interface inviteUser {
+  userdata: publicUser;
+  currentData: miniChat;
+}

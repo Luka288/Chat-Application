@@ -18,6 +18,7 @@
     (close)="searchToggle.set(!searchToggle())"
     (emitSearch)="getUserSearch($event)"
     (emitInvite)="inviteUser($event)"
+    [currentChatData]="currentChat()!"
     [results]="foundUsers()"
   />
   }
@@ -31,8 +32,8 @@
       <div class="base-c" [class.active]="isActive()">
         <div class="top-section">
           <ul>
-            <li>
-              <a (click)="modalOpen.set(!modalOpen())">Create chat</a>
+            <li (click)="modalOpen.set(!modalOpen())">
+              <a>Create chat</a>
             </li>
           </ul>
         </div>
@@ -42,7 +43,7 @@
 
           <div
             class="chat-wrap"
-            [ngClass]="{ active: currentChat() === chat.chatId }"
+            [ngClass]="{ active: currentChat()?.chatId === chat.chatId }"
           >
             <app-mini-chat [chatData]="chat" (chatSelected)="setChat($event)" />
           </div>
@@ -61,12 +62,15 @@
     </aside>
 
     <aside id="chat-content">
-      <div class="content" [appScroll]="chatContent() || currentChat() !== ''">
+      <div
+        class="content"
+        [appScroll]="chatContent() || currentChat()?.chatId !== ''"
+      >
         <!-- მესიჯების დასარენდერებლად გამოიყენება -->
 
         @if (loadingChat()) {
         <h1>Loading...</h1>
-        }@else if (currentChat() === '') {
+        }@else if (currentChat()?.chatId === '') {
 
         <div class="n-chat">
           <p>💬 No messages yet — start the conversation and say hello! 👋</p>
@@ -93,7 +97,7 @@
         }
       </div>
 
-      @if (currentChat() !== '') {
+      @if (currentChat() !== null) {
       <div class="input-area">
         <form [formGroup]="messageControl" (ngSubmit)="sendMessage()">
           <input
@@ -105,7 +109,7 @@
 
           <button
             type="submit"
-            *ngIf="currentChat() !== 'general'"
+            *ngIf="currentChat()?.chatId !== 'general'"
             (click)="searchToggle.set(!searchToggle())"
           >
             Invite people

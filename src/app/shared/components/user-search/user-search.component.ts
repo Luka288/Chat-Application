@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { publicUser } from '../../interfaces/user.interface';
+import { inviteUser, publicUser } from '../../interfaces/user.interface';
 import {
   FormControl,
   FormGroup,
@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { miniChat } from '../../interfaces/chat.interface';
 
 @Component({
   selector: 'app-user-search',
@@ -18,9 +19,11 @@ import { CommonModule } from '@angular/common';
 })
 export class UserSearchComponent {
   @Input() results: publicUser[] | null = null;
+  @Input() currentChatData!: miniChat;
+
   @Output() close = new EventEmitter<void>();
   @Output() emitSearch = new EventEmitter<string>();
-  @Output() emitInvite = new EventEmitter<publicUser>();
+  @Output() emitInvite = new EventEmitter<inviteUser>();
 
   ngOnInit(): void {
     this.searchForm.controls.searchControl.valueChanges
@@ -37,8 +40,11 @@ export class UserSearchComponent {
     }),
   });
 
-  sendInvite(userData: publicUser) {
-    this.emitInvite.emit(userData);
+  sendInvite(userData: publicUser, currentData = this.currentChatData) {
+    this.emitInvite.emit({
+      userdata: userData,
+      currentData: this.currentChatData,
+    });
   }
 
   sendSearch(username: string) {

@@ -6,6 +6,7 @@ import {
   Output,
 } from '@angular/core';
 import { Invitation } from '../../interfaces/invite.interface';
+import { inviteUser } from '../../interfaces/user.interface';
 
 @Component({
   selector: 'app-notification-modal',

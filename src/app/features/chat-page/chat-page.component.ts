@@ -6,7 +6,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { RouterModule } from '@angular/router';
+import { InitialNavigation, RouterModule } from '@angular/router';
 import {
   FormControl,
   FormGroup,
@@ -19,12 +19,13 @@ import { UserMiniProfileComponent } from '../../shared/components/user-mini-prof
 import { MiniChatComponent } from '../../shared/components/mini-chat/mini-chat.component';
 import { CommonModule } from '@angular/common';
 import { ChatService } from '../../shared/services/chat.service';
-import { chatMessage } from '../../shared/interfaces/chat.interface';
+import { chatMessage, miniChat } from '../../shared/interfaces/chat.interface';
 import { ChatContentComponent } from '../../shared/components/chat-content/chat-content.component';
 import { ScrollDirective } from '../../shared/directives/scroll.directive';
 import { Message } from '../../shared/models/message.model';
 import { ChatCreateModalComponent } from '../../shared/components/chat-create-modal/chat-create-modal.component';
 import {
+  inviteUser,
   privateUser,
   publicUser,
 } from '../../shared/interfaces/user.interface';
@@ -56,9 +57,7 @@ export class ChatPageComponent {
   private readonly searchService = inject(SearchService);
   readonly authService = inject(AuthService);
 
-  // todo: invitations
-
-  currentChat = signal<string>('');
+  currentChat = signal<miniChat | null>(null);
   loadingChat = signal<boolean>(false);
   modalOpen = signal<boolean>(false);
   notificationOpen = signal<boolean>(false);
@@ -84,9 +83,7 @@ export class ChatPageComponent {
   ngOnInit(): void {
     this.fetchUser();
 
-    this.chatService.loadChats().subscribe((res) => {
-      console.log(res?.allChats);
-    });
+    console.log(this.currentChat());
   }
 
   sendMessage(): void {
@@ -101,17 +98,17 @@ export class ChatPageComponent {
       user_id: this.currentUser()?.uid!,
       text: text!,
       time: new Date().toISOString(),
-      chat_id: this.currentChat(),
+      chat_id: this.currentChat()!.chatId,
     });
 
     this.chatService.sendMessage(msgObj);
 
     this.messageControl.reset();
-    this.fetchMessages(this.currentChat());
+    this.fetchMessages(this.currentChat()!.chatId);
   }
 
   setChat(chat: { chatId: string; chatName: string }): void {
-    this.currentChat.set(chat.chatId);
+    this.currentChat.set(chat);
     this.fetchMessages(chat.chatId);
   }
 
@@ -136,8 +133,8 @@ export class ChatPageComponent {
     });
   }
 
-  inviteUser(userData: publicUser, chatId = this.currentChat()) {
-    this.chatService.sendInvite(userData, chatId);
+  inviteUser(data: inviteUser) {
+    this.chatService.sendInvite(data.userdata, data.currentData);
   }
 
   async createChat(chatName: string): Promise<void> {
@@ -146,19 +143,13 @@ export class ChatPageComponent {
   }
 
   acceptInvite(data: Invitation) {
-    this.chatService.acceptInvite(
-      {
-        chatName: data.chat_id,
-        chatId: data.chat_id,
-      },
-      data.invitedBy
-    );
+    this.chatService.acceptInvite(data);
   }
 
   declineInvite(data: Invitation) {
     this.chatService.declineInvite(
       {
-        chatName: data.chat_id,
+        chatName: data.chatName,
         chatId: data.chat_id,
       },
       data.invitedBy
