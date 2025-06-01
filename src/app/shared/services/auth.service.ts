@@ -33,14 +33,13 @@ export class AuthService {
     } catch (error) {}
   }
 
-  // აბრუნებს null მნისვნელობას თითქმის ყველა
-  // მომხმარებლის დატაზე საჭიროა anonymous სახელის
-  // გამოტანა თემფლეითში
   async loginAsAnonym() {
     const user = getAuth();
 
     try {
-      const userData = await signInAnonymously(user);
+      const userData = await signInAnonymously(user).then((u) => {
+        this.storeUsers();
+      });
 
       return userData;
     } catch (error) {
@@ -57,6 +56,10 @@ export class AuthService {
     if (!user) {
       return;
     }
+
+    // if (user.isAnonymous) {
+    //   console.log('test');
+    // }
 
     const privateData = User.privateUserModel(user);
     const publicUserData = PublicUser.publicUserModel(user);

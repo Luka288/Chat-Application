@@ -16,7 +16,9 @@ export class User {
     return {
       uid: user.uid,
       email: user.email!,
-      username: user.displayName!,
+      username: user.isAnonymous
+        ? `Guest#${user.uid.substring(0, 4)}`
+        : user.displayName!,
       photoURL: user.photoURL!,
       isAnonymous: user.isAnonymous ? 'Anonymous' : 'standard_user',
       chats: [{ chatName: 'general', chatId: 'general' }],
@@ -36,7 +38,9 @@ export class PublicUser {
   static publicUserModel(user: FirebaseUser): publicUser {
     return {
       uid: user.uid,
-      username: user.displayName || '',
+      username: user.isAnonymous
+        ? `Guest#${user.uid.substring(0, 4)}`
+        : user.displayName!,
       photoURL: user.photoURL || '',
       isAnonymous: user.isAnonymous ? 'Anonymous' : 'standard_user',
     };

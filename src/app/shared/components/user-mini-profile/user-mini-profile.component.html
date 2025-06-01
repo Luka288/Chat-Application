@@ -1,7 +1,13 @@
 <section>
   <div class="top-user-c">
     <div class="base-info">
-      <img [src]="user?.photoURL" [alt]="`${user?.username} IMAGE`" />
+      <img
+        [src]="
+          user?.photoURL ||
+          'https://griis.ca/wp-content/uploads/2019/08/noun_User_1930144-copie-2.png'
+        "
+        [alt]="`${user?.username} IMAGE`"
+      />
       <p>{{ user?.username || user?.isAnonymous }}</p>
 
       <div class="notifications" (click)="openNotification.emit()">
