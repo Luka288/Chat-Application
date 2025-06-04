@@ -32,17 +32,14 @@ export class UserSearchComponent {
   @Output() emitSearch = new EventEmitter<string>();
   @Output() emitInvite = new EventEmitter<inviteUser>();
 
-  nothingFound = signal<boolean>(false);
-
   ngOnInit(): void {
+    this.results = null;
     this.searchForm.controls.searchControl.valueChanges
       .pipe(debounceTime(500))
       .subscribe((res) => {
         this.sendSearch(res);
       });
   }
-
-  ngOnChanges(changes: SimpleChanges) {}
 
   searchForm = new FormGroup({
     searchControl: new FormControl('', {
@@ -68,5 +65,11 @@ export class UserSearchComponent {
     }
 
     this.emitSearch.emit(username);
+  }
+
+  closeModal() {
+    this.results = null;
+    this.close.emit();
+    this.searchForm.reset();
   }
 }
