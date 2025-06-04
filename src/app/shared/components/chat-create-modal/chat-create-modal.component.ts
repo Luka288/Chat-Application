@@ -27,7 +27,6 @@ export class ChatCreateModalComponent {
 
   sendData() {
     if (this.chatFormGroup.controls.chatNameControl.invalid) {
-      console.log('Invalid chat name');
       return;
     }
 

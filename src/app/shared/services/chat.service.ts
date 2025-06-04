@@ -104,7 +104,7 @@ export class ChatService {
 
       this.authService.currentUser();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -145,8 +145,6 @@ export class ChatService {
     if (!user) return;
 
     const userRef = doc(this.Fire, `users/${user.uid}`);
-
-    console.log(chatData);
 
     await updateDoc(userRef, {
       chats: arrayUnion({

@@ -83,8 +83,6 @@ export class ChatPageComponent {
 
   ngOnInit(): void {
     this.fetchUser();
-
-    console.log(this.currentChat());
   }
 
   sendMessage(): void {
@@ -127,7 +125,6 @@ export class ChatPageComponent {
 
   fetchUser() {
     this.authService.currentUser().subscribe((user) => {
-      console.log(user);
       this.currentUser.set(user);
     });
   }

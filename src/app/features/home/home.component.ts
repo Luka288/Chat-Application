@@ -9,8 +9,4 @@ import { AuthService } from '../../shared/services/auth.service';
 })
 export class HomeComponent {
   readonly authService = inject(AuthService);
-
-  ngOnInit(): void {
-    // this.authService.currUser().subscribe(console.log);
-  }
 }

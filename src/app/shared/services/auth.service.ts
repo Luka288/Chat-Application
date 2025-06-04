@@ -57,10 +57,6 @@ export class AuthService {
       return;
     }
 
-    // if (user.isAnonymous) {
-    //   console.log('test');
-    // }
-
     const privateData = User.privateUserModel(user);
     const publicUserData = PublicUser.publicUserModel(user);
 
