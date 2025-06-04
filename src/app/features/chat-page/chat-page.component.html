@@ -105,15 +105,16 @@
             placeholder="Type your message here..."
             formControlName="message"
           />
-          <button type="submit">Send</button>
-
-          <button
-            type="submit"
-            *ngIf="currentChat()?.chatId !== 'general'"
-            (click)="searchToggle.set(!searchToggle())"
-          >
-            Invite people
-          </button>
+          <div class="btns">
+            <button type="submit">Send</button>
+            <button
+              type="submit"
+              *ngIf="currentChat()?.chatId !== 'general'"
+              (click)="searchToggle.set(!searchToggle())"
+            >
+              Invite people
+            </button>
+          </div>
         </form>
       </div>
       }

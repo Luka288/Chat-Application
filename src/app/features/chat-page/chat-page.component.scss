@@ -140,7 +140,7 @@ main {
           padding: 10px;
 
           input {
-            width: 90%;
+            width: 100%;
             @include input-style();
 
             &::placeholder {
@@ -154,24 +154,31 @@ main {
             }
           }
 
-          button {
-            padding: 0 20px;
-            height: 56px;
-            border: none;
-            border-radius: 12px;
-            background-color: $white;
-            color: $dark-blue;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+          .btns {
+            max-width: 150px;
+            @include flex(center, center, no-wrap, row);
+            gap: 15px;
 
-            &:hover {
-              background-color: $off-white;
-            }
+            button {
+              width: 50%;
+              height: 56px;
+              padding: 0 20px;
+              border: none;
+              border-radius: 12px;
+              background-color: $white;
+              color: $dark-blue;
+              font-weight: bold;
+              cursor: pointer;
+              transition: all 0.2s ease;
+              box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 
-            &:active {
-              transform: scale(0.98);
+              &:hover {
+                background-color: $off-white;
+              }
+
+              &:active {
+                transform: scale(0.98);
+              }
             }
           }
         }
@@ -181,10 +188,6 @@ main {
 
   .chat-wrap {
     background-color: $muted-gray;
-
-    &.active {
-      background-color: #3b82f6;
-    }
   }
 }
 

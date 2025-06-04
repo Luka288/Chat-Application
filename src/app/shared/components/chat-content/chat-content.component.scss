@@ -5,28 +5,35 @@ main {
   width: 100%;
   max-width: 450px;
   background-color: $message-card-bg;
-  border-radius: 10px;
-  box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.1);
-  // rgba(0, 0, 0, 0.1)
+  border-radius: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   font-family: $roboto;
-  box-sizing: border-box;
-  padding: 10px;
+  padding: 12px 16px;
   color: $gray-dark;
+  box-sizing: border-box;
 
-  .user {
-    p {
-      margin: 0;
-      font-size: $font-size-m;
+  .message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
 
-      span {
-        font-size: $font-size-s;
-      }
+    .sender {
+      font-weight: 600;
+      font-size: clamp(0.9rem, 2.5vw, 1rem);
+      color: #1c1e21;
+    }
+
+    .time {
+      font-size: 0.75rem;
+      color: #65676b;
     }
   }
 
-  .content {
-    font-size: $font-size-m;
-    margin-top: 9px;
+  .message-body {
+    font-size: clamp(0.95rem, 2.5vw, 1.05rem);
+    line-height: 1.5;
+    color: #050505;
 
     p {
       margin: 0;

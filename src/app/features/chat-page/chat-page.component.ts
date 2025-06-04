@@ -33,6 +33,7 @@ import { NotificationModalComponent } from './../../shared/components/notificati
 import { UserSearchComponent } from '../../shared/components/user-search/user-search.component';
 import { SearchService } from '../../shared/services/search.service';
 import { Invitation } from '../../shared/interfaces/invite.interface';
+import { retry } from 'rxjs';
 
 @Component({
   selector: 'app-chat-page',
@@ -108,6 +109,10 @@ export class ChatPageComponent {
   }
 
   setChat(chat: { chatId: string; chatName: string }): void {
+    if (chat.chatId === this.currentChat()?.chatId) {
+      return;
+    }
+
     this.currentChat.set(chat);
     this.fetchMessages(chat.chatId);
   }

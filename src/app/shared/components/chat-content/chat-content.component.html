@@ -1,15 +1,10 @@
 <main>
-  <div class="user">
-    <p>
-      {{ chatContent?.sender }}
-      <span>
-        {{ chatContent?.time | date : "shortTime" }}
-      </span>
-    </p>
+  <div class="message-header">
+    <span class="sender">{{ chatContent?.sender }}</span>
+    <span class="time">{{ chatContent?.time | date : "shortTime" }}</span>
   </div>
-  <div class="content">
-    <p>
-      {{ chatContent?.text }}
-    </p>
+
+  <div class="message-body">
+    <p>{{ chatContent?.text }}</p>
   </div>
 </main>
