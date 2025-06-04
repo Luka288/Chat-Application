@@ -10,7 +10,12 @@
       <button (click)="close.emit()">close</button>
     </div>
 
-    @if (results) {
+    <div class="nothing" *ngIf="results?.length === 0">
+      <h2>Nothing found</h2>
+    </div>
+
+    @if (results?.length) {
+
     <div class="search-results">
       @for (item of results; track $index) {
 
@@ -29,6 +34,7 @@
 
       }
     </div>
+
     }
   </div>
 </section>

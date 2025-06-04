@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  signal,
+  SimpleChanges,
+} from '@angular/core';
 import { inviteUser, publicUser } from '../../interfaces/user.interface';
 import {
   FormControl,
@@ -25,6 +32,8 @@ export class UserSearchComponent {
   @Output() emitSearch = new EventEmitter<string>();
   @Output() emitInvite = new EventEmitter<inviteUser>();
 
+  nothingFound = signal<boolean>(false);
+
   ngOnInit(): void {
     this.searchForm.controls.searchControl.valueChanges
       .pipe(debounceTime(500))
@@ -33,6 +42,8 @@ export class UserSearchComponent {
       });
   }
 
+  ngOnChanges(changes: SimpleChanges) {}
+
   searchForm = new FormGroup({
     searchControl: new FormControl('', {
       validators: [Validators.required],
@@ -40,7 +51,7 @@ export class UserSearchComponent {
     }),
   });
 
-  sendInvite(userData: publicUser, currentData = this.currentChatData) {
+  sendInvite(userData: publicUser) {
     this.emitInvite.emit({
       userdata: userData,
       currentData: this.currentChatData,
@@ -52,6 +63,7 @@ export class UserSearchComponent {
       this.searchForm.invalid ||
       this.searchForm.controls.searchControl.value === ''
     ) {
+      this.results = null;
       return;
     }
 
