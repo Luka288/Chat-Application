@@ -63,7 +63,9 @@
 
     <aside id="chat-content">
       @if (currentChat()?.chatId && currentChat()?.chatId !== 'general') {
-      <div class="chat-header"></div>
+      <div class="chat-header">
+        <button>Leave chat</button>
+      </div>
       }
 
       <div
