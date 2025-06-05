@@ -13,18 +13,21 @@ import {
 import {
   arrayUnion,
   deleteDoc,
+  getDoc,
   orderBy,
   query,
   serverTimestamp,
 } from 'firebase/firestore';
 import { Message } from '../models/message.model';
 import { AuthService } from './auth.service';
-import { map, Observable, of } from 'rxjs';
+import { filter, map, Observable, of } from 'rxjs';
 import { Invitation } from '../interfaces/invite.interface';
 import { privateUser, publicUser } from '../interfaces/user.interface';
 import { AlertsService } from './alerts.service';
 import { combinedChats } from '../interfaces/chats.interface';
 import { miniChat } from '../interfaces/chat.interface';
+import { getAdditionalUserInfo } from 'firebase/auth';
+import { membersInter } from '../interfaces/members.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -121,6 +124,16 @@ export class ChatService {
     const curUser = this.auth.currentUser;
     if (!curUser) return;
 
+    if (user.uid === curUser.uid) {
+      this.alertService.toast(
+        'You cant invite yourself in chat',
+        'error',
+        'red'
+      );
+      console.error('YOU CANT INVITE YOURSELF IN CHAT');
+      return;
+    }
+
     const invId = `${data.chatId}_${user.uid}`;
     const userRef = doc(this.Fire, `users/${user.uid}/invitations/${invId}`);
 
@@ -171,10 +184,7 @@ export class ChatService {
     this.alertService.toast('Invite accepted', 'success', 'green');
   }
 
-  declineInvite(
-    chatData: { chatName: string; chatId: string },
-    invitedBy: string
-  ) {
+  declineInvite(chatData: miniChat, invitedBy: string) {
     const user = this.auth.currentUser;
     if (!user) return;
 
@@ -183,6 +193,28 @@ export class ChatService {
     deleteDoc(invRef);
 
     this.alertService.toast('Invite rejected', 'success', 'green');
+  }
+
+  async quitChat(data: miniChat) {
+    const user = this.auth.currentUser;
+    if (!user) return;
+
+    const userRef = doc(this.Fire, `users/${user.uid}`);
+    const userData = await getDoc(userRef);
+
+    if (userData.exists()) {
+      const snapData = userData.data() as privateUser;
+
+      const chats: miniChat[] = snapData.chats;
+
+      const updatedChats = chats.filter((c) => c.chatId !== data.chatId);
+
+      await updateDoc(userRef, {
+        chats: updatedChats,
+      });
+
+      this.loadChats();
+    }
   }
 
   loadChats(): Observable<combinedChats | null> {

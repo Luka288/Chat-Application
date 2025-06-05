@@ -62,9 +62,10 @@
     </aside>
 
     <aside id="chat-content">
-      @if (currentChat()?.chatId && currentChat()?.chatId !== 'general') {
+      @if (currentChat()?.chatId && currentChat()?.chatId !== 'general' &&
+      this.checkCreated() === false) {
       <div class="chat-header">
-        <button>Leave chat</button>
+        <button (click)="quitChat(currentChat()!)">Leave chat</button>
       </div>
       }
 
@@ -88,7 +89,10 @@
           @if (chatContent().length === 0) {
 
           <div class="n-chat">
-            <p>💬 No messages sent yet — say hello to members! 👋</p>
+            <!-- <p>💬 No messages sent yet — say hello to members! 👋</p>  -->
+            <p>
+              💬say hello to '{{ currentChat()?.chatName }}' chat members 👋
+            </p>
           </div>
 
           } @else { @for (messageData of chatContent(); track $index) {

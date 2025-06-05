@@ -109,9 +109,10 @@ main {
         background-color: $secondary;
         display: flex;
         justify-content: flex-end;
+        align-items: center;
 
         button {
-          @include custom-button();
+          @include custom-button(30px);
         }
       }
 

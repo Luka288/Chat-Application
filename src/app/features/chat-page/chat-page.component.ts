@@ -1,4 +1,10 @@
-import { Component, inject, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  signal,
+  SimpleChanges,
+} from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 import {
@@ -57,22 +63,28 @@ export class ChatPageComponent {
   notificationOpen = signal<boolean>(false);
   searchToggle = signal<boolean>(false);
   isActive = signal<boolean>(false);
-
   currentUser = signal<privateUser | null>(null);
+  foundUsers = signal<publicUser[] | null>(null);
+  chatContent = signal<chatMessage[]>([]);
 
   messageControl = new FormGroup({
     message: new FormControl('', [Validators.required]),
   });
-
   notifications = toSignal(this.chatService.getInvitations(), {
     initialValue: [],
   });
-
-  foundUsers = signal<publicUser[] | null>(null);
-
-  chatContent = signal<chatMessage[]>([]);
-
   chats = toSignal(this.chatService.loadChats(), { initialValue: null });
+
+  checkCreated = computed(() => {
+    const user = this.currentUser();
+    const current = this.currentChat();
+
+    if (!user || !current) return false;
+
+    return (
+      user.createdChats?.some((item) => item.chatId === current.chatId) ?? false
+    );
+  });
 
   ngOnInit(): void {
     this.fetchUser();
@@ -99,7 +111,7 @@ export class ChatPageComponent {
     this.fetchMessages(this.currentChat()!.chatId);
   }
 
-  setChat(chat: { chatId: string; chatName: string }): void {
+  setChat(chat: miniChat): void {
     if (chat.chatId === this.currentChat()?.chatId) {
       return;
     }
@@ -149,5 +161,24 @@ export class ChatPageComponent {
       },
       data.invitedBy
     );
+  }
+
+  updateChat(data: miniChat) {
+    this.currentChat.set({
+      chatId: data.chatId,
+      chatName: data.chatName,
+    });
+  }
+
+  quitChat(chatData: miniChat) {
+    this.chatService.quitChat(chatData).then(() => {
+      const remainingChats = this.chats()?.allChats.filter(
+        (c) => c.chatId !== chatData.chatId
+      );
+
+      if (remainingChats && remainingChats.length > 0) {
+        this.updateChat(remainingChats[0]);
+      }
+    });
   }
 }
