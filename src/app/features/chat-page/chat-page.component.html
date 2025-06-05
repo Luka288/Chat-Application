@@ -62,6 +62,10 @@
     </aside>
 
     <aside id="chat-content">
+      @if (currentChat()?.chatId && currentChat()?.chatId !== 'general') {
+      <div class="chat-header"></div>
+      }
+
       <div
         class="content"
         [appScroll]="chatContent() || currentChat()?.chatId !== ''"

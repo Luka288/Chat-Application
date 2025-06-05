@@ -121,7 +121,7 @@ export class ChatService {
     const curUser = this.auth.currentUser;
     if (!curUser) return;
 
-    const invId = `${curUser.uid}_${data.chatId}`;
+    const invId = `${data.chatId}_${user.uid}`;
     const userRef = doc(this.Fire, `users/${user.uid}/invitations/${invId}`);
 
     try {
@@ -132,7 +132,9 @@ export class ChatService {
         chatName: data.chatName,
         status: 'pending',
         time: serverTimestamp(),
+        toUserId: user.uid,
       });
+
       this.alertService.toast('Invite sent', 'success', 'green');
     } catch (error) {
       this.alertService.toast('Invite already sent', 'error', 'red');
@@ -145,6 +147,10 @@ export class ChatService {
     if (!user) return;
 
     const userRef = doc(this.Fire, `users/${user.uid}`);
+    const memberRef = doc(
+      this.Fire,
+      `chats/${chatData.chat_id}/members/${user.uid}`
+    );
 
     await updateDoc(userRef, {
       chats: arrayUnion({
@@ -153,9 +159,14 @@ export class ChatService {
       }),
     });
 
-    const invId = `${chatData.invitedBy}_${chatData.chat_id}`;
+    await setDoc(memberRef, {
+      username: user.displayName,
+      joinedAt: new Date().toISOString(),
+    });
+
+    const invId = `${chatData.chat_id}_${user.uid}`;
     const invRef = doc(this.Fire, `users/${user.uid}/invitations/${invId}`);
-    deleteDoc(invRef);
+    await deleteDoc(invRef);
 
     this.alertService.toast('Invite accepted', 'success', 'green');
   }

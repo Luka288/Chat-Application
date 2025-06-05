@@ -1,12 +1,6 @@
-import {
-  Component,
-  computed,
-  inject,
-  signal,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { InitialNavigation, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import {
   FormControl,
   FormGroup,
@@ -33,7 +27,6 @@ import { NotificationModalComponent } from './../../shared/components/notificati
 import { UserSearchComponent } from '../../shared/components/user-search/user-search.component';
 import { SearchService } from '../../shared/services/search.service';
 import { Invitation } from '../../shared/interfaces/invite.interface';
-import { retry } from 'rxjs';
 
 @Component({
   selector: 'app-chat-page',
