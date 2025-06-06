@@ -1,4 +1,4 @@
-import { miniChat } from './chat.interface';
+import { miniChat } from './chats.interface';
 
 export interface privateUser {
   username: string;

@@ -19,7 +19,7 @@ import { UserMiniProfileComponent } from '../../shared/components/user-mini-prof
 import { MiniChatComponent } from '../../shared/components/mini-chat/mini-chat.component';
 import { CommonModule } from '@angular/common';
 import { ChatService } from '../../shared/services/chat.service';
-import { chatMessage, miniChat } from '../../shared/interfaces/chat.interface';
+import { chatMessage, miniChat } from '../../shared/interfaces/chats.interface';
 import { ChatContentComponent } from '../../shared/components/chat-content/chat-content.component';
 import { ScrollDirective } from '../../shared/directives/scroll.directive';
 import { Message } from '../../shared/models/message.model';

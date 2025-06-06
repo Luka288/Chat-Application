@@ -1,5 +1,5 @@
 import { Directive, ElementRef, Input, SimpleChanges } from '@angular/core';
-import { chatMessage } from '../interfaces/chat.interface';
+import { chatMessage } from '../interfaces/chats.interface';
 
 @Directive({
   selector: '[appScroll]',

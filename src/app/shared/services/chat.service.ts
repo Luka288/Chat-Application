@@ -25,7 +25,7 @@ import { Invitation } from '../interfaces/invite.interface';
 import { privateUser, publicUser } from '../interfaces/user.interface';
 import { AlertsService } from './alerts.service';
 import { combinedChats } from '../interfaces/chats.interface';
-import { miniChat } from '../interfaces/chat.interface';
+import { miniChat } from '../interfaces/chats.interface';
 import { getAdditionalUserInfo } from 'firebase/auth';
 import { membersInter } from '../interfaces/members.interface';
 

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { miniChat } from '../../interfaces/chat.interface';
+import { miniChat } from '../../interfaces/chats.interface';
 
 @Component({
   selector: 'app-mini-chat',

@@ -9,7 +9,7 @@ import {
 } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { miniChat } from '../../interfaces/chat.interface';
+import { miniChat } from '../../interfaces/chats.interface';
 
 @Component({
   selector: 'app-user-search',

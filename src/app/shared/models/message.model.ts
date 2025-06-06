@@ -1,5 +1,5 @@
 import { Timestamp } from '@angular/fire/firestore';
-import { chatMessage } from '../interfaces/chat.interface';
+import { chatMessage } from '../interfaces/chats.interface';
 
 export class Message {
   constructor(
