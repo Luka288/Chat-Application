@@ -42,17 +42,7 @@ main {
         justify-content: center;
 
         input {
-          width: 90%;
-          max-width: 250px;
-          height: 44px;
-          box-sizing: border-box;
-          padding: 6px;
-          font-size: 17px;
-          outline: none;
-          border: none;
-          background-color: #dde8f7;
-          font-family: $inter;
-          border-radius: 10px;
+          @include customInput();
         }
 
         .err-c {
