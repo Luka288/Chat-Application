@@ -1,0 +1,48 @@
+<main>
+  <section>
+    <h2>Register</h2>
+    <form [formGroup]="registrationForm">
+      <div class="input-wrap">
+        <input type="text" placeholder="Email" formControlName="email" />
+        @if (registrationForm.controls.email.hasError('required') &&
+        registrationForm.controls.email.touched ) {
+        <p class="err-c">Email is required</p>
+        } @if (registrationForm.controls.email.hasError('email') &&
+        registrationForm.controls.email.touched ) {
+        <p class="err-c">Enter correct email</p>
+        }
+      </div>
+
+      <div class="input-wrap">
+        <input
+          type="password"
+          placeholder="Password"
+          formControlName="password"
+        />
+        @if (registrationForm.controls.password.hasError('required') &&
+        registrationForm.controls.password.touched ) {
+        <p class="err-c">Password is required</p>
+        } @if (registrationForm.controls.password.hasError('minlength') &&
+        registrationForm.controls.password.touched ) {
+        <p class="err-c">Password must be at least 8 characters</p>
+        } @if (registrationForm.controls.password.hasError('maxlength') &&
+        registrationForm.controls.password.touched ) {
+        <p class="err-c">Password must be less then 16 characters</p>
+        }
+      </div>
+
+      <div class="input-wrap">
+        <input type="text" placeholder="Username" formControlName="username" />
+        @if (registrationForm.controls.username.hasError('required') &&
+        registrationForm.controls.username.touched ) {
+        <p class="err-c">Username is required</p>
+        }
+      </div>
+
+      <div class="buttons">
+        <button type="button" (click)="submitForm()">Register</button>
+        <button (click)="closeModal.emit()">Close</button>
+      </div>
+    </form>
+  </section>
+</main>

@@ -1,6 +1,12 @@
 import { inject, Injectable } from '@angular/core';
-import { Auth } from '@angular/fire/auth';
-import { collection, doc, Firestore } from '@angular/fire/firestore';
+import {
+  Auth,
+  createUserWithEmailAndPassword,
+  signInWithCredential,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from '@angular/fire/auth';
+import { doc, Firestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import {
   getAuth,
@@ -9,9 +15,11 @@ import {
   signInWithPopup,
 } from 'firebase/auth';
 import { getDoc, setDoc } from 'firebase/firestore';
-import { privateUser, publicUser } from '../interfaces/user.interface';
-import { from, map, Observable, of, switchMap } from 'rxjs';
+import { privateUser } from '../interfaces/user.interface';
+import { from, Observable, of, switchMap } from 'rxjs';
 import { PublicUser, User } from '../models/user.model';
+import { loginData, registartionData } from '../interfaces/reg.interface';
+import { AlertsService } from './alerts.service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +28,7 @@ export class AuthService {
   private readonly FireAuth = inject(Auth);
   private readonly Fire = inject(Firestore);
   private readonly router = inject(Router);
+  private readonly alerts = inject(AlertsService);
 
   async googleAuth() {
     try {
@@ -31,6 +40,35 @@ export class AuthService {
 
       this.storeUsers();
     } catch (error) {}
+  }
+
+  async registerUser(data: registartionData) {
+    try {
+      const createUser = await createUserWithEmailAndPassword(
+        this.FireAuth,
+        data.email,
+        data.password
+      );
+
+      await updateProfile(createUser.user, { displayName: data.username });
+      this.storeUsers();
+
+      this.alerts.toast('Account registered', 'success', 'green');
+    } catch (error) {
+      console.error(error);
+    } finally {
+      this.router.navigateByUrl('/chats');
+    }
+  }
+
+  async loginUser(data: loginData) {
+    return signInWithEmailAndPassword(
+      this.FireAuth,
+      data.email,
+      data.password
+    ).then(() => {
+      this.router.navigateByUrl('/chats');
+    });
   }
 
   async loginAsAnonym() {

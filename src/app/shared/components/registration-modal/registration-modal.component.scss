@@ -1,0 +1,77 @@
+@use "../../../scss/variables" as *;
+@use "../../../scss/mixins" as *;
+
+main {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1200;
+  @include static-center();
+
+  section {
+    width: 90%;
+    max-width: 450px;
+    // height: 350px;
+    background: white;
+    box-sizing: border-box;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+    h2 {
+      font-family: $montserrat;
+      font-weight: 550;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+
+      .input-wrap {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        input {
+          width: 90%;
+          max-width: 250px;
+          height: 44px;
+          box-sizing: border-box;
+          padding: 6px;
+          font-size: 17px;
+          outline: none;
+          border: none;
+          background-color: #dde8f7;
+          font-family: $inter;
+          border-radius: 10px;
+        }
+
+        .err-c {
+          margin: 0;
+          color: red;
+          font-family: $inter;
+        }
+      }
+
+      .buttons {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-top: 30px;
+
+        button {
+          @include customFormButton();
+        }
+      }
+    }
+  }
+}

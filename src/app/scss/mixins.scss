@@ -96,3 +96,26 @@
   flex-direction: column;
   justify-content: space-around;
 }
+
+@mixin customFormButton(
+  $width: 150px,
+  $bgColor: #4b4bdf,
+  $fontColor: white,
+  $hoverColor: #8a8adf
+) {
+  width: 100%;
+  max-width: $width;
+  padding: 10px;
+  background-color: $bgColor;
+  color: $fontColor;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 3px;
+
+  &:hover {
+    background-color: $hoverColor;
+    transition: all 0.2s;
+  }
+}

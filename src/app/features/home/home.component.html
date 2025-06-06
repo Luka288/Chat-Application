@@ -1,6 +1,52 @@
 <main>
+  @if (modalOpen()) {
+  <app-registration-modal
+    (closeModal)="modalOpen.set(!modalOpen())"
+    (emitRegisterData)="registerUser($event)"
+  />
+  }
+
   <section id="auth-container">
     <h2>Authorize</h2>
+
+    <div class="login-form">
+      <form [formGroup]="loginForm">
+        <div class="input-wrap">
+          <input type="text" placeholder="Email" formControlName="email" />
+          @if (loginForm.controls.email.hasError('required') &&
+          loginForm.controls.email.touched ) {
+          <p class="err-c">Email is required</p>
+          } @if (loginForm.controls.email.hasError('email') &&
+          loginForm.controls.email.touched ) {
+          <p class="err-c">Enter correct email</p>
+          }
+        </div>
+
+        <div class="input-wrap">
+          <input
+            type="password"
+            placeholder="Password"
+            formControlName="password"
+          />
+          @if (loginForm.controls.password.hasError('required') &&
+          loginForm.controls.password.touched ) {
+          <p class="err-c">Password is required</p>
+          } @if (loginForm.controls.password.hasError('minlength') &&
+          loginForm.controls.password.touched ) {
+          <p class="err-c">Password must be at least 8 characters</p>
+          } @if (loginForm.controls.password.hasError('maxlength') &&
+          loginForm.controls.password.touched ) {
+          <p class="err-c">Password must be less then 16 characters</p>
+          }
+        </div>
+
+        <div class="buttons">
+          <button type="button" (click)="submitForm()">Login</button>
+          <button (click)="modalOpen.set(!modalOpen())">Create account</button>
+        </div>
+      </form>
+    </div>
+
     <div class="auth-options">
       <ul>
         <li id="google-auth" (click)="authService.googleAuth()">
