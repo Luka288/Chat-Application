@@ -2,7 +2,6 @@ import { inject, Injectable } from '@angular/core';
 import {
   Auth,
   createUserWithEmailAndPassword,
-  signInWithCredential,
   signInWithEmailAndPassword,
   updateProfile,
 } from '@angular/fire/auth';
@@ -55,6 +54,7 @@ export class AuthService {
 
       this.alerts.toast('Account registered', 'success', 'green');
     } catch (error) {
+      this.alerts.toast('Something went wrong try again', 'error', 'red');
       console.error(error);
     } finally {
       this.router.navigateByUrl('/chats');
@@ -62,13 +62,14 @@ export class AuthService {
   }
 
   async loginUser(data: loginData) {
-    return signInWithEmailAndPassword(
-      this.FireAuth,
-      data.email,
-      data.password
-    ).then(() => {
-      this.router.navigateByUrl('/chats');
-    });
+    return signInWithEmailAndPassword(this.FireAuth, data.email, data.password)
+      .then(() => {
+        this.router.navigateByUrl('/chats');
+      })
+      .catch((e) => {
+        this.alerts.toast('Something went wrong', 'error', 'red');
+        throw e;
+      });
   }
 
   async loginAsAnonym() {

@@ -77,10 +77,10 @@
 
         @if (loadingChat()) {
         <h1>Loading...</h1>
-        }@else if (currentChat()?.chatId === '') {
+        }@else if (currentChat()?.chatId === null) {
 
         <div class="n-chat">
-          <p>💬 No messages yet — start the conversation and say hello! 👋</p>
+          <p>💬 Choose the chat and start the conversation👋</p>
         </div>
 
         }@else {
@@ -89,7 +89,6 @@
           @if (chatContent().length === 0) {
 
           <div class="n-chat">
-            <!-- <p>💬 No messages sent yet — say hello to members! 👋</p>  -->
             <p>
               💬say hello to '{{ currentChat()?.chatName }}' chat members 👋
             </p>
