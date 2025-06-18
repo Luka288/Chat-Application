@@ -1,1 +1,6 @@
+<app-alert
+  *ngIf="alertData$ | async as alert"
+  [alertData]="alert"
+  (closeAlert)="alert.display = !alert.display"
+/>
 <router-outlet />

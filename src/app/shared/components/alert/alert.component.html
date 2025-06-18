@@ -1,0 +1,15 @@
+<section
+  [ngClass]="{
+    show: alertData?.display,
+    hide: !alertData?.display,
+    success: alertData?.type === 'success',
+    error: alertData?.type === 'error',
+    warning: alertData?.type === 'warning',
+    info: alertData?.type === 'info'
+  }"
+>
+  <p>
+    {{ alertData?.message }}
+  </p>
+  <i class="fa-solid fa-xmark" (click)="closeAlert.emit()"></i>
+</section>

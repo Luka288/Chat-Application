@@ -20,14 +20,12 @@ import {
 } from 'firebase/firestore';
 import { Message } from '../models/message.model';
 import { AuthService } from './auth.service';
-import { filter, map, Observable, of } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { Invitation } from '../interfaces/invite.interface';
 import { privateUser, publicUser } from '../interfaces/user.interface';
-import { AlertsService } from './alerts.service';
 import { combinedChats } from '../interfaces/chats.interface';
 import { miniChat } from '../interfaces/chats.interface';
-import { getAdditionalUserInfo } from 'firebase/auth';
-import { membersInter } from '../interfaces/members.interface';
+import { CustomAlertsService } from './custom-alerts.service';
 
 @Injectable({
   providedIn: 'root',
@@ -36,7 +34,7 @@ export class ChatService {
   private readonly auth = inject(Auth);
   private readonly Fire = inject(Firestore);
   private readonly authService = inject(AuthService);
-  private readonly alertService = inject(AlertsService);
+  private readonly customAlertService = inject(CustomAlertsService);
 
   async sendMessage(data: Message) {
     const user = this.auth.currentUser;
@@ -125,12 +123,12 @@ export class ChatService {
     if (!curUser) return;
 
     if (user.uid === curUser.uid) {
-      this.alertService.toast(
+      this.customAlertService.displayAlert(
         'You cant invite yourself in chat',
-        'error',
-        'red'
+        'error'
       );
-      console.error('YOU CANT INVITE YOURSELF IN CHAT');
+
+      console.error('YOU CANT INVITE YOURSELF IN CHAT'); //! throw
       return;
     }
 
@@ -148,9 +146,9 @@ export class ChatService {
         toUserId: user.uid,
       });
 
-      this.alertService.toast('Invite sent', 'success', 'green');
+      this.customAlertService.displayAlert('Invite sent', 'success');
     } catch (error) {
-      this.alertService.toast('Invite already sent', 'error', 'red');
+      this.customAlertService.displayAlert('Invite already sent', 'error');
       console.error(error);
     }
   }
@@ -181,7 +179,7 @@ export class ChatService {
     const invRef = doc(this.Fire, `users/${user.uid}/invitations/${invId}`);
     await deleteDoc(invRef);
 
-    this.alertService.toast('Invite accepted', 'success', 'green');
+    this.customAlertService.displayAlert('Invite accepted', 'success');
   }
 
   declineInvite(chatData: miniChat, invitedBy: string) {
@@ -192,7 +190,7 @@ export class ChatService {
     const invRef = doc(this.Fire, `users/${user.uid}/invitations/${invId}`);
     deleteDoc(invRef);
 
-    this.alertService.toast('Invite rejected', 'success', 'green');
+    this.customAlertService.displayAlert('Invite rejected', 'success');
   }
 
   async quitChat(data: miniChat) {

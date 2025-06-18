@@ -1,0 +1,62 @@
+@use "./../../../scss/mixins" as *;
+@use "./../../../scss/variables" as *;
+
+section {
+  width: 350px;
+  height: 25px;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  color: white;
+  padding: 15px;
+  opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+    opacity 0.25s ease-in;
+  @include flex(space-between, center, wrap, row);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  font-family: $poppins;
+  z-index: 999;
+
+  p {
+    margin: 0;
+  }
+
+  &.show {
+    opacity: 1;
+    transform: translate(-50%, 35px);
+    pointer-events: auto;
+  }
+
+  &.hide {
+    opacity: 0;
+    transform: translate(-50%, -100%);
+  }
+
+  &.success {
+    background-color: $success-color;
+  }
+
+  &.warning {
+    background-color: $warning-color;
+  }
+
+  &.error {
+    background-color: #f72b2a;
+  }
+
+  &.info {
+    background-color: #2f80ed;
+  }
+
+  i {
+    cursor: pointer;
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 720px) {
+  section {
+    width: 250px;
+  }
+}

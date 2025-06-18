@@ -19,6 +19,7 @@ import { from, Observable, of, switchMap } from 'rxjs';
 import { PublicUser, User } from '../models/user.model';
 import { loginData, registartionData } from '../interfaces/reg.interface';
 import { AlertsService } from './alerts.service';
+import { CustomAlertsService } from './custom-alerts.service';
 
 @Injectable({
   providedIn: 'root',
@@ -27,7 +28,7 @@ export class AuthService {
   private readonly FireAuth = inject(Auth);
   private readonly Fire = inject(Firestore);
   private readonly router = inject(Router);
-  private readonly alerts = inject(AlertsService);
+  private readonly customAlerts = inject(CustomAlertsService);
 
   async googleAuth() {
     try {
@@ -52,9 +53,9 @@ export class AuthService {
       await updateProfile(createUser.user, { displayName: data.username });
       this.storeUsers();
 
-      this.alerts.toast('Account registered', 'success', 'green');
+      this.customAlerts.displayAlert('Account registered', 'success');
     } catch (error) {
-      this.alerts.toast('Something went wrong try again', 'error', 'red');
+      this.customAlerts.displayAlert('Something went wrong try again', 'error');
       console.error(error);
     } finally {
       this.router.navigateByUrl('/chats');
@@ -67,7 +68,7 @@ export class AuthService {
         this.router.navigateByUrl('/chats');
       })
       .catch((e) => {
-        this.alerts.toast('Something went wrong', 'error', 'red');
+        this.customAlerts.displayAlert('Error: Check fields', 'error');
         throw e;
       });
   }
