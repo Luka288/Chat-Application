@@ -7,10 +7,11 @@ import { AlertData } from '../interfaces/alert.interface';
 })
 export class CustomAlertsService {
   private message = new BehaviorSubject<string | null>(null);
+  private display = new BehaviorSubject<boolean>(false);
+
   private type = new BehaviorSubject<
     'success' | 'error' | 'info' | 'warning' | null
   >(null);
-  private display = new BehaviorSubject<boolean>(false);
 
   alert$: Observable<AlertData> = combineLatest([
     this.message,
@@ -19,7 +20,7 @@ export class CustomAlertsService {
   ]).pipe(
     map(([message, type, display]) => ({
       message: message ?? '',
-      type: type ?? 'success',
+      type: type ?? undefined,
       display,
     }))
   );
@@ -38,8 +39,11 @@ export class CustomAlertsService {
 
     setTimeout(() => {
       this.display.next(false);
-      this.message.next(null);
-      this.type.next(null);
+
+      setTimeout(() => {
+        this.message.next(null);
+        this.type.next(null);
+      }, 300);
     }, 3000);
   }
 
