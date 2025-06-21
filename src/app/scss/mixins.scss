@@ -36,9 +36,8 @@
 }
 
 @mixin custom-button($h: 56px, $bg: $white, $c: $dark-blue, $h-c: $off-white) {
-  padding: 0 20px;
-  // height: 56px;
   height: $h;
+  padding: 0 20px;
   border: none;
   border-radius: 12px;
   background-color: $bg;
@@ -120,9 +119,9 @@
   }
 }
 
-@mixin customInput() {
+@mixin customInput($width: 100%) {
   width: 90%;
-  max-width: 250px;
+  max-width: $width;
   height: 44px;
   box-sizing: border-box;
   padding: 10px 14px;

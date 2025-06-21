@@ -11,7 +11,6 @@ main {
   #auth-container {
     width: 90%;
     max-width: 450px;
-    // height: 450px;
     background-color: $secondary;
     box-sizing: border-box;
     margin: auto;
@@ -52,13 +51,15 @@ main {
           justify-content: center;
 
           input {
-            @include customInput();
+            @include customInput(300px);
           }
 
           .err-c {
+            width: 70%;
             margin: 0;
-            color: red;
             font-family: $inter;
+            text-align: left;
+            color: red;
           }
         }
 
@@ -89,16 +90,18 @@ main {
         li {
           width: 90%;
           max-width: 150px;
+          padding: 15px;
           text-align: center;
-          height: 50px;
           list-style: none;
           color: $off-white;
-          font-size: $font-size-m;
+          font-size: 14px;
           font-family: $roboto;
-          padding: 15px;
           box-sizing: border-box;
           cursor: pointer;
           text-transform: capitalize;
+          display: flex;
+          align-items: center;
+          justify-content: center;
 
           &:nth-child(1) {
             background-color: #4285f4;
