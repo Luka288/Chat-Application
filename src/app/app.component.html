@@ -1,6 +1,8 @@
+@defer (when alertData$ | async; on idle) {
 <app-alert
   *ngIf="alertData$ | async as alert"
   [alertData]="alert"
   (closeAlert)="alert.display = !alert.display"
 />
+}
 <router-outlet />
