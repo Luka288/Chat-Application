@@ -22,8 +22,8 @@
 }
 
 @mixin input-style($input-bg: $dark-blue) {
-  flex: 1;
   height: 56px;
+  // flex: 1;
   border: none;
   outline: none;
   border-radius: 12px;

@@ -55,7 +55,9 @@ export class ChatService {
         time: data.time,
         chat_id: data.chat_id,
       });
-    } catch (error) {}
+    } catch (error) {
+      this.customAlertService.displayAlert('Something went wrong', 'error');
+    }
   }
 
   getMessages(chat_id: string) {

@@ -114,14 +114,30 @@
             placeholder="Type your message here..."
             formControlName="message"
           />
+
+          @if (toggleEmojis()) {
+          <app-emotes-panel
+            [dataInput]="emojies()"
+            (emotionEmit)="addEmote($event!)"
+            (close)="toggleEmojis.set(!toggleEmojis())"
+          />
+          }
+
           <div class="btns">
-            <button type="submit">Send</button>
+            <button (click)="sendMessage()">
+              <i class="fa-solid fa-arrow-up"></i>
+            </button>
+
+            <a (click)="toggleEmojis.set(!toggleEmojis())">
+              <i class="fa-solid fa-face-smile"></i>
+            </a>
+
             <button
-              type="submit"
+              type="button"
               *ngIf="currentChat()?.chatId !== 'general'"
               (click)="searchToggle.set(!searchToggle())"
             >
-              Invite people
+              <i class="fa-solid fa-user-plus"></i>
             </button>
           </div>
         </form>

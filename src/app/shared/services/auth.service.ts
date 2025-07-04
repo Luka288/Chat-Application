@@ -18,7 +18,6 @@ import { privateUser } from '../interfaces/user.interface';
 import { from, Observable, of, switchMap } from 'rxjs';
 import { PublicUser, User } from '../models/user.model';
 import { loginData, registartionData } from '../interfaces/reg.interface';
-import { AlertsService } from './alerts.service';
 import { CustomAlertsService } from './custom-alerts.service';
 
 @Injectable({
@@ -47,7 +46,7 @@ export class AuthService {
       const createUser = await createUserWithEmailAndPassword(
         this.FireAuth,
         data.email,
-        data.password
+        data.password,
       );
 
       await updateProfile(createUser.user, { displayName: data.username });
@@ -77,12 +76,14 @@ export class AuthService {
     const user = getAuth();
 
     try {
-      const userData = await signInAnonymously(user).then((u) => {
+      const userData = await signInAnonymously(user).then(() => {
         this.storeUsers();
+        this.customAlerts.displayAlert('Authorized as Anonymous', 'success');
       });
 
       return userData;
     } catch (error) {
+      this.customAlerts.displayAlert('Something went wrong', 'error');
       return error;
     }
   }
@@ -131,7 +132,7 @@ export class AuthService {
         } else {
           return of(null);
         }
-      })
+      }),
     );
   }
 }

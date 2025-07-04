@@ -1,0 +1,13 @@
+<section>
+  <div class="top-controls">
+    <i class="fa-solid fa-x" (click)="close.emit()"></i>
+  </div>
+  <div class="emotes">
+    <span
+      *ngFor="let item of dataInput; let i = index"
+      (click)="emotionEmit.emit(item)"
+    >
+      {{ item.emoji }}
+    </span>
+  </div>
+</section>

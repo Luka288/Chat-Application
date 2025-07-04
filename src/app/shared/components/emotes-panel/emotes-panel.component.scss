@@ -1,0 +1,35 @@
+section {
+  width: 100%;
+  max-width: 250px;
+  height: 200px;
+  position: absolute;
+  bottom: 100%;
+  right: 20px;
+  transform: translateY(-10px);
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 6px 13px rgba(0, 0, 0, 0.2);
+  z-index: 3000;
+
+  .top-controls {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    justify-content: flex-end;
+
+    i {
+      background-color: black;
+      cursor: pointer;
+      font-size: 17px;
+      box-sizing: border-box;
+      padding: 5px;
+      border-radius: 50%;
+    }
+  }
+
+  .emotes {
+    font-size: 26px;
+    cursor: pointer;
+  }
+}

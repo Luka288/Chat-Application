@@ -33,6 +33,9 @@ import { NotificationModalComponent } from './../../shared/components/notificati
 import { UserSearchComponent } from '../../shared/components/user-search/user-search.component';
 import { SearchService } from '../../shared/services/search.service';
 import { Invitation } from '../../shared/interfaces/invite.interface';
+import { DataService } from '../../shared/services/data.service';
+import { EmotesPanelComponent } from '../../shared/components/emotes-panel/emotes-panel.component';
+import { emojiData } from '../../shared/interfaces/emojies.interface';
 
 @Component({
   selector: 'app-chat-page',
@@ -48,6 +51,7 @@ import { Invitation } from '../../shared/interfaces/invite.interface';
     ChatCreateModalComponent,
     NotificationModalComponent,
     UserSearchComponent,
+    EmotesPanelComponent,
   ],
   templateUrl: './chat-page.component.html',
   styleUrl: './chat-page.component.scss',
@@ -55,6 +59,7 @@ import { Invitation } from '../../shared/interfaces/invite.interface';
 export class ChatPageComponent {
   private readonly chatService = inject(ChatService);
   private readonly searchService = inject(SearchService);
+  private readonly dataService = inject(DataService);
   readonly authService = inject(AuthService);
 
   currentChat = signal<miniChat | null>(null);
@@ -66,6 +71,7 @@ export class ChatPageComponent {
   currentUser = signal<privateUser | null>(null);
   foundUsers = signal<publicUser[] | null>(null);
   chatContent = signal<chatMessage[]>([]);
+  toggleEmojis = signal<boolean>(false);
 
   messageControl = new FormGroup({
     message: new FormControl('', [Validators.required]),
@@ -74,6 +80,7 @@ export class ChatPageComponent {
     initialValue: [],
   });
   chats = toSignal(this.chatService.loadChats(), { initialValue: null });
+  emojies = toSignal(this.dataService.getEmojies(), { initialValue: [] });
 
   checkCreated = computed(() => {
     const user = this.currentUser();
@@ -88,10 +95,22 @@ export class ChatPageComponent {
 
   ngOnInit(): void {
     this.fetchUser();
+    this.dataService.getEmojies().subscribe(console.log);
+  }
+
+  addEmote(emote: emojiData) {
+    const currentValue = this.messageControl.controls.message.value;
+    this.messageControl.controls.message.setValue(currentValue + emote.emoji);
   }
 
   sendMessage(): void {
-    if (this.messageControl.invalid) {
+    const rawValue = this.messageControl.controls.message.value;
+
+    if (
+      this.messageControl.invalid ||
+      !rawValue ||
+      rawValue.trim().length === 0
+    ) {
       return;
     }
 
