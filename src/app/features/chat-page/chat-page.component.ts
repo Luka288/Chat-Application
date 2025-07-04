@@ -95,7 +95,6 @@ export class ChatPageComponent {
 
   ngOnInit(): void {
     this.fetchUser();
-    this.dataService.getEmojies().subscribe(console.log);
   }
 
   addEmote(emote: emojiData) {
@@ -127,7 +126,7 @@ export class ChatPageComponent {
     this.chatService.sendMessage(msgObj);
 
     this.messageControl.reset();
-    this.fetchMessages(this.currentChat()!.chatId);
+    // this.fetchMessages(this.currentChat()!.chatId);
   }
 
   setChat(chat: miniChat): void {
