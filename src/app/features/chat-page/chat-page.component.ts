@@ -1,10 +1,4 @@
-import {
-  Component,
-  computed,
-  inject,
-  signal,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 import {
