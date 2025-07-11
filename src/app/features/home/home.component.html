@@ -12,7 +12,16 @@
     <div class="login-form">
       <form [formGroup]="loginForm">
         <div class="input-wrap">
-          <input type="text" placeholder="Email" formControlName="email" />
+          <input
+            type="text"
+            placeholder="Email"
+            formControlName="email"
+            [ngClass]="{
+              error:
+                loginForm.controls.email.invalid &&
+                loginForm.controls.email.touched
+            }"
+          />
           @if (loginForm.controls.email.hasError('required') &&
           loginForm.controls.email.touched ) {
           <p class="err-c">Email is required</p>
@@ -27,6 +36,11 @@
             type="password"
             placeholder="Password"
             formControlName="password"
+            [ngClass]="{
+              error:
+                loginForm.controls.password.invalid &&
+                loginForm.controls.password.touched
+            }"
           />
           @if (loginForm.controls.password.hasError('required') &&
           loginForm.controls.password.touched ) {
@@ -50,18 +64,15 @@
     </div>
 
     <div class="auth-options">
+      <div class="options-head">
+        <p>or sign up with</p>
+      </div>
       <ul>
         <li id="google-auth" (click)="authService.googleAuth()">
-          <a>
-            <i class="fa-brands fa-google"></i>
-            google</a
-          >
+          <i class="fa-brands fa-google"></i>
         </li>
-        <li (click)="authService.loginAsAnonym()">
-          <a>
-            <i class="fa-solid fa-user-secret"></i>
-            anonymous</a
-          >
+        <li id="anonym" (click)="authService.loginAsAnonym()">
+          <i class="fa-solid fa-user-secret"></i>
         </li>
       </ul>
     </div>

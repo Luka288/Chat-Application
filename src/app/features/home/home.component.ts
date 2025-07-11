@@ -12,10 +12,16 @@ import {
   loginData,
   registartionData,
 } from '../../shared/interfaces/reg.interface';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-home',
-  imports: [ReactiveFormsModule, FormsModule, RegistrationModalComponent],
+  imports: [
+    ReactiveFormsModule,
+    FormsModule,
+    RegistrationModalComponent,
+    CommonModule,
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
