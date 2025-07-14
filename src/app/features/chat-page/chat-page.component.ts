@@ -120,7 +120,6 @@ export class ChatPageComponent {
     this.chatService.sendMessage(msgObj);
 
     this.messageControl.reset();
-    // this.fetchMessages(this.currentChat()!.chatId);
   }
 
   setChat(chat: miniChat): void {

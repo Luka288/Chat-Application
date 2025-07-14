@@ -14,4 +14,9 @@ export const Emojies: emojiData[] = [
   { emoji: '🍕' },
   { emoji: '🐶' },
   { emoji: '📱' },
+  { emoji: '🔥' },
+  { emoji: '💯' },
+  { emoji: '🤯' },
+  { emoji: '🥳' },
+  { emoji: '🌟' },
 ];

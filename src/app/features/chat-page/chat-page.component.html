@@ -76,7 +76,11 @@
         <!-- მესიჯების დასარენდერებლად გამოიყენება -->
 
         @if (loadingChat()) {
-        <h1>Loading...</h1>
+        <div id="loader">
+          <div class="spinner-wrapper">
+            <div class="spinner"></div>
+          </div>
+        </div>
         }@else if (currentChat()?.chatId === null) {
 
         <div class="n-chat">
