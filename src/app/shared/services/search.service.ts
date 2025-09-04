@@ -3,9 +3,7 @@ import { Auth } from '@angular/fire/auth';
 import { collectionData, Firestore } from '@angular/fire/firestore';
 import { collection } from 'firebase/firestore';
 import { map, Observable } from 'rxjs';
-import { PublicUser } from '../models/user.model';
 import { publicUser } from '../interfaces/user.interface';
-import { mapToCanActivate } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',

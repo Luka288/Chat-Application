@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Emojies } from '../consts/emotes';
-import { from, of } from 'rxjs';
+import { of } from 'rxjs';
 import { emojiData } from '../interfaces/emojies.interface';
 
 @Injectable({
